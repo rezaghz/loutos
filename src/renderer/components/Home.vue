@@ -338,7 +338,7 @@
 
     .day-cell-item-inner span {
         font-size: 18px;
-        color: #9b9b9b;
+        color: #676666;
         -webkit-touch-callout: none;
         -webkit-user-select: none;
         -khtml-user-select: none;
@@ -589,7 +589,7 @@
     }
 
     .disableStyle {
-        color: #2c2c2c38 !important;
+        color: #b3b0b0 !important;
     }
 
     .day_selected {
@@ -599,6 +599,9 @@
 
     .calendar-in-span {
         font-size: 20px;
+    }
+    .list-class-date{
+        margin-top: 20px;
     }
 
     /* dashboard */
