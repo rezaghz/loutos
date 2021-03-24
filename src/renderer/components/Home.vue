@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="days-body">
-                    <div class="day-cell" @click="getDateDetail(value.year,value.month,value.day)"
+                    <div class="day-cell" @click="getDateDetail(value.year,value.month,value.shamsi_day)"
                          v-for="value in dayOfCalender">
                         <div class="day-cell-inner">
                             <div class="day-cell-item">
@@ -92,6 +92,9 @@
                 <a href="#" class="new-class d-flex align-items-center justify-content-center transition-5">
                     <i class="fa fa-video-camera"></i> شرکت در کلاس جدید
                 </a>
+                <div class="go_today" @click="goToday()" v-if="showGoTodayBtn">
+                    <button  class="btn btn-danger rounded-circle"><i class="fa fa-arrow-right"></i></button>
+                </div>
             </div>
         </div>
         <copyright></copyright>
@@ -113,6 +116,7 @@
                 day: "",
                 dayOfCalender: [],
                 disableSelected: false,
+                showGoTodayBtn : false,
                 calenderCourse: [],
                 boldDate: {
                     date: "",
@@ -138,6 +142,7 @@
                 let dayInMonth = new persianDate([year, month]).daysInMonth();
                 let beforeMonthDate = this.getBeforeMonthDate(year, month);
                 let self = this;
+                let today = new persianDate();
                 this.dayOfCalender = [];
                 // Before Deselected Month
                 if (beforeMonthDate.length > 0) {
@@ -159,6 +164,7 @@
                 let counter = 1;
                 for (counter = 1; counter <= dayInMonth; counter++) {
                     let createDay = new persianDate([year, month, counter]);
+                    let showSelected = today.date() === createDay.date() && today.year() === createDay.year() && today.month() === createDay.month();
                     self.dayOfCalender.push({
                         shamsi_day: createDay.date(),
                         miladi_day: this.shamsi_to_miladi(createDay.year(), createDay.month(), createDay.date(), "DD"),
@@ -166,7 +172,7 @@
                         year: createDay.year(),
                         month: createDay.month(),
                         date: createDay.format("L"),
-                        disableSelected: self.disableSelected,
+                        disableSelected: showSelected,
                         vacationStyle: createDay.format('dddd') === "جمعه",
                     });
                     self.disableSelected = false;
@@ -188,6 +194,19 @@
                     }, self);
                 }
                 console.log(this.dayOfCalender);
+            },
+            goToday(){
+                this.showGoTodayBtn = false;
+                let today = new persianDate();
+                this.year = today.year();
+                this.month = today.month();
+                this.day = today.date();
+                this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
+                this.boldDate = {
+                    day: today.format("D") + " " + today.toLocale('fa').format('MMMM'),
+                    year: today.year(),
+                }
+                this.createCalender(this.year, this.month);
             },
             getBeforeMonthDate(year, month) {
                 let firstDay = new persianDate([year, month, 1]).toLocale('en').format('d');
@@ -234,19 +253,17 @@
                 } else return [];
             },
             prevMonth() {
-                //showLoading();
+                this.showGoTodayBtn = true;
                 let prevMonth = new persianDate([this.year, this.month, 10]).subtract('M', 1);
                 this.createCalender(prevMonth.year(), prevMonth.month());
                 this.processDate(prevMonth.year(), prevMonth.month());
-                // hideLoading();
             }
             ,
             nextMonth() {
-                // showLoading();
+                this.showGoTodayBtn = true;
                 let nextMonth = new persianDate([this.year, this.month, 10]).add('M', 1);
                 this.createCalender(nextMonth.year(), nextMonth.month());
                 this.processDate(nextMonth.year(), nextMonth.month());
-                //hideLoading();
             },
             processDate(year, month) {
                 this.month = month;
@@ -256,7 +273,6 @@
             },
             getDateDetail(year, month, day) {
                 let date = new persianDate([year, month, day]);
-                console.log(year);
                 this.boldDate = {
                     day: date.format("D") + " " + date.toLocale('fa').format('MMMM'),
                     year: year,
@@ -271,7 +287,7 @@
             shamsi_to_qamari(year, month, day, format = "iMMMM") {
                 let miladi_date = new persianDate([year, month, day]).toCalendar('gregorian').toLocale('en');
                 let my = miladi_date.format("YYYY/MM/DD");
-                return moment(my).subtract("days",1).format(format);
+                return moment(my).subtract("days", 1).format(format);
             }
         }
     }
@@ -294,6 +310,7 @@
     .date-table {
         width: 60%;
         padding: 10px;
+        position: relative;
     }
 
     .days-head {
@@ -331,7 +348,7 @@
     }
 
     .day-cell-item-inner:hover {
-        background: #17f1ff;
+        background: rgba(176, 202, 204, 0.28);
         color: #fff;
         -webkit-transition: all 0.2s ease-in-out;
         -moz-transition: all 0.2s ease-in-out;
@@ -491,6 +508,7 @@
     }
 
     .dd-calendar {
+        position: relative;
         background-color: #fbfaff;
         padding: 10PX;
         width: 40%;
@@ -668,8 +686,7 @@
     }
 
     .day_selected {
-        background: #17f1ff;
-        box-shadow: 0 0 0 7px #17f1ff30;
+        background: rgba(176, 202, 204, 0.38);
     }
 
     .calendar-in-span {
@@ -690,6 +707,17 @@
         font-size: 11px;
     }
 
+    .go_today {
+        display: block;
+        position: absolute;
+        bottom: 20px;
+        right: 10px;
+    }
+    .go_today button {
+        text-align: center;
+        display: block;
+        color: white;
+    }
 
     /* dashboard */
 </style>
