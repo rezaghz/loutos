@@ -3,15 +3,15 @@
         <div class="dashboard d-flex">
             <div class="date-table">
                 <div class="date-table-header">
-                    <div class="month-next">
+                    <div class="month-next" @click="prevMonth()">
                         <i class="fa fa-angle-right"></i>
-                        <span @click="prevMonth()">ماه قبل</span>
+                        <span>ماه قبل</span>
                     </div>
                     <div class="month-now">
                         <span>{{title}}</span>
                     </div>
-                    <div class="month-last">
-                        <span @click="nextMonth()">ماه بعد</span>
+                    <div class="month-last" @click="nextMonth()">
+                        <span>ماه بعد</span>
                         <i class="fa fa-angle-left"></i>
                     </div>
                     <div class="clear"></div>
@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="days-body">
-                    <div class="day-cell" @click="getDateDetail(value.date,value.disableSelected,value.day)"
+                    <div class="day-cell" @click="getDateDetail(value.year,value.month,value.day)"
                          v-for="value in dayOfCalender">
                         <div class="day-cell-inner">
                             <div class="day-cell-item">
@@ -118,20 +118,26 @@
             this.month = today.month();
             this.day = today.date();
             this.title = today.toLocale('fa').format('MMMM') + " " + this.year;
+            this.boldDate = {
+                day: today.format("D") + " " + today.toLocale('fa').format('MMMM'),
+                year: today.year(),
+            }
             this.createCalender(this.year, this.month);
         },
 
         methods: {
             createCalender(year, month) {
                 let dayInMonth = new persianDate([year, month]).daysInMonth();
-                let extraDate = this.getExtraDate(year, month);
+                let beforeMonthDate = this.getBeforeMonthDate(year, month);
                 let self = this;
                 this.dayOfCalender = [];
                 // Extra Day
-                if (extraDate.length > 0) {
-                    extraDate.forEach(function (time) {
+                if (beforeMonthDate.length > 0) {
+                    beforeMonthDate.forEach(function (time) {
                         self.dayOfCalender.push({
                             day: time.day,
+                            month: time.month,
+                            year: time.year,
                             date: time.date,
                             disableStyle: time.disableStyle,
                             disableSelected: false,
@@ -144,13 +150,15 @@
                     let createDay = new persianDate([year, month, counter]);
                     self.dayOfCalender.push({
                         day: createDay.date(),
+                        year: createDay.year(),
+                        month: createDay.month(),
                         date: createDay.format("L"),
                         disableSelected: self.disableSelected,
                     });
                     self.disableSelected = false;
                 }
             },
-            getExtraDate(year, month) {
+            getBeforeMonthDate(year, month) {
                 let firstDay = new persianDate([year, month, 1]).toLocale('en').format('d');
                 let time = firstDay > 1 ? new persianDate([year, month, 1]).subtract('d', firstDay - 1) : [];
                 if (time.length !== 0) {
@@ -161,6 +169,8 @@
                         let createDay = new persianDate([time.year(), time.month(), counter]);
                         extraDay.push({
                             day: createDay.date(),
+                            year: createDay.year(),
+                            month: createDay.month(),
                             date: createDay.format("L"),
                             disableStyle: true,
                         });
@@ -190,13 +200,14 @@
                 let set = new persianDate([this.year, this.month]);
                 this.title = set.toLocale('fa').format('MMMM') + " " + set.year();
             },
-            getDateDetail(date, selected, day) {
-                let self = this;
-                self.calenderCourse = [];
-                let elseDay = new persianDate([this.year, this.month, day]);
+            getDateDetail(year, month, day) {
+                //let self = this;
+                //self.calenderCourse = [];
+                let date = new persianDate([year, month, day]);
+                console.log(year);
                 this.boldDate = {
-                    day: day + " " + elseDay.toLocale('fa').format('MMMM'),
-                    year: this.year,
+                    day: date.format("D") + " " + date.toLocale('fa').format('MMMM'),
+                    year: year,
                 }
             },
             open(link) {
@@ -600,7 +611,8 @@
     .calendar-in-span {
         font-size: 20px;
     }
-    .list-class-date{
+
+    .list-class-date {
         margin-top: 20px;
     }
 
