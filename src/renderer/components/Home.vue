@@ -8,7 +8,7 @@
                         <span>ماه قبل</span>
                     </div>
                     <div class="month-now">
-                        <span>{{title}}</span>
+                        <span>{{shamsi_title}}</span>
                     </div>
                     <div class="month-last" @click="nextMonth()">
                         <span>ماه بعد</span>
@@ -33,9 +33,12 @@
                             <div class="day-cell-item">
                                 <div class="day-cell-item-inner" :class="[{day_selected : value.disableSelected}]">
                                     <span :class="{disableStyle : value.disableStyle,vacationStyle : value.vacationStyle}">
-{{value.day}}
+{{value.shamsi_day}}
                                     </span>
                                 </div>
+                                <div class="miladi small" style="float:right">{{value.miladi_day}}</div>
+                                <div class="qamari small" style="float:left">{{value.qamari_day}}</div>
+                                <div class="clearfix"></div>
                             </div>
                         </div>
                     </div>
@@ -104,7 +107,7 @@
         components: {Copyright},
         data() {
             return {
-                title: "",
+                shamsi_title: "",
                 month: "",
                 year: "",
                 day: "",
@@ -122,7 +125,7 @@
             this.year = today.year();
             this.month = today.month();
             this.day = today.date();
-            this.title = today.toLocale('fa').format('MMMM') + " " + this.year;
+            this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
             this.boldDate = {
                 day: today.format("D") + " " + today.toLocale('fa').format('MMMM'),
                 year: today.year(),
@@ -136,11 +139,13 @@
                 let beforeMonthDate = this.getBeforeMonthDate(year, month);
                 let self = this;
                 this.dayOfCalender = [];
-                // Extra Day
+                // Before Deselected Month
                 if (beforeMonthDate.length > 0) {
                     beforeMonthDate.forEach(function (time) {
                         self.dayOfCalender.push({
-                            day: time.day,
+                            shamsi_day: time.day,
+                            miladi_day: this.shamsi_to_miladi(time.year, time.month, time.day, "DD"),
+                            qamari_day: this.shamsi_to_qamari(time.year, time.month, time.day, "iDD"),
                             month: time.month,
                             year: time.year,
                             date: time.date,
@@ -155,7 +160,9 @@
                 for (counter = 1; counter <= dayInMonth; counter++) {
                     let createDay = new persianDate([year, month, counter]);
                     self.dayOfCalender.push({
-                        day: createDay.date(),
+                        shamsi_day: createDay.date(),
+                        miladi_day: this.shamsi_to_miladi(createDay.year(), createDay.month(), createDay.date(), "DD"),
+                        qamari_day: this.shamsi_to_qamari(createDay.year(), createDay.month(), createDay.date(), "iDD"),
                         year: createDay.year(),
                         month: createDay.month(),
                         date: createDay.format("L"),
@@ -168,7 +175,9 @@
                 if (afterMonthDate.length > 0) {
                     afterMonthDate.forEach(function (time) {
                         self.dayOfCalender.push({
-                            day: time.day,
+                            shamsi_day: time.day,
+                            miladi_day: this.shamsi_to_miladi(time.year, time.month, time.day, "DD"),
+                            qamari_day: this.shamsi_to_qamari(time.year, time.month, time.day, "iDD"),
                             month: time.month,
                             year: time.year,
                             date: time.date,
@@ -243,11 +252,9 @@
                 this.month = month;
                 this.year = year;
                 let set = new persianDate([this.year, this.month]);
-                this.title = set.toLocale('fa').format('MMMM') + " " + set.year();
+                this.shamsi_title = set.toLocale('fa').format('MMMM') + " " + set.year();
             },
             getDateDetail(year, month, day) {
-                //let self = this;
-                //self.calenderCourse = [];
                 let date = new persianDate([year, month, day]);
                 console.log(year);
                 this.boldDate = {
@@ -257,6 +264,14 @@
             },
             open(link) {
                 this.$electron.shell.openExternal(link)
+            },
+            shamsi_to_miladi(year, month, day, format = "LL") {
+                return new persianDate([year, month, day]).toCalendar('gregorian').toLocale('en').format(format);
+            },
+            shamsi_to_qamari(year, month, day, format = "iMMMM") {
+                let miladi_date = new persianDate([year, month, day]).toCalendar('gregorian').toLocale('en');
+                let my = miladi_date.format("YYYY/MM/DD");
+                return moment(my).subtract("days",1).format(format);
             }
         }
     }
@@ -664,6 +679,17 @@
     .list-class-date {
         margin-top: 20px;
     }
+
+    .qamari.small {
+        font-family: iransans_light;
+        font-size: 13px;
+    }
+
+    .miladi.small {
+        font-family: Tahoma, serif;
+        font-size: 11px;
+    }
+
 
     /* dashboard */
 </style>

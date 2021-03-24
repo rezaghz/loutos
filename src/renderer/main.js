@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 
 window.persianDate = require('persian-date');
+window.moment = require('moment-hijri');
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
