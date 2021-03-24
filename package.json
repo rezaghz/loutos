@@ -17,8 +17,8 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "calender",
-    "appId": "com.rezaghz.calender",
+    "productName": "persian calender",
+    "appId": "com.rezaghz.persian.calender",
     "directories": {
       "output": "build"
     },
@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "persian-date": "^1.1.0",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",

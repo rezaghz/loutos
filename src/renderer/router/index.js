@@ -7,6 +7,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'خانه',
+      component: require('@/components/Home').default
+    },
+    {
+      path: '/landing',
       name: 'landing-page',
       component: require('@/components/LandingPage').default
     },

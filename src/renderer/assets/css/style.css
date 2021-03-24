@@ -1,0 +1,104 @@
+@font-face {
+    font-family: iransans;
+    font-style: normal;
+    font-weight: normal;
+    src: url('../fonts/eot/iransans.eot');
+    src: url('../fonts/eot/iransans.eot?#iefix') format('embedded-opentype'), /* IE6-8 */ url('../fonts/woff2/iransans.woff2') format('woff2'), /* FF39+,Chrome36+, Opera24+*/ url('../fonts/woff/iransans.woff') format('woff'), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/ url('../fonts/ttf/iransans.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: iransans_light;
+    font-style: normal;
+    font-weight: 300;
+    src: url('../fonts/eot/iransans_light.eot');
+    src: url('../fonts/eot/iransans_light.eot?#iefix') format('embedded-opentype'), /* IE6-8 */ url('../fonts/woff2/iransans_light.woff2') format('woff2'), /* FF39+,Chrome36+, Opera24+*/ url('../fonts/woff/iransans_light.woff') format('woff'), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/ url('../fonts/ttf/iransans_light.ttf') format('truetype');
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    padding-right: 0 !important;
+}
+
+* {
+    font-family: iransans, Tahoma, serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.shadow {
+    -webkit-box-shadow: 1px 2px 30px 2px rgba(0, 0, 0, .1);
+    -moz-box-shadow: 1px 2px 30px 2px rgba(0, 0, 0, .1);
+    box-shadow: 1px 2px 30px 2px rgba(0, 0, 0, .1);
+}
+
+.transition-5 {
+    transition: 0.5s;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -ms-transition: 0.5s;
+    -o-transition: 0.5s;
+}
+
+a {
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -moz-transition: 0.3s;
+    -ms-transition: 0.3s;
+    -o-transition: 0.3s;
+    color: #353652;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #353652;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input:focus {
+    outline: none;
+}
+
+li {
+    list-style: none;
+}
+
+button:focus {
+    outline: 0 !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+p, h1, h2, h3, h4, h5, h6, strong, div, a {
+    color: #353652;
+}
+
+
+.IRANSans-Light {
+    font-family: iransans_light, Tahoma, serif;
+}
+
+
+.IRANSans {
+    font-family: iransans, Tahoma, serif;
+}
