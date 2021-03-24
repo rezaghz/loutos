@@ -32,7 +32,7 @@
                         <div class="day-cell-inner">
                             <div class="day-cell-item">
                                 <div class="day-cell-item-inner" :class="[{day_selected : value.disableSelected}]">
-                                    <span :class="{disableStyle : value.disableStyle}">
+                                    <span :class="{disableStyle : value.disableStyle,vacationStyle : value.vacationStyle}">
 {{value.day}}
                                     </span>
                                 </div>
@@ -145,6 +145,7 @@
                             year: time.year,
                             date: time.date,
                             disableStyle: time.disableStyle,
+                            vacationStyle: time.vacationStyle,
                             disableSelected: false,
                         });
                     }, self);
@@ -159,6 +160,7 @@
                         month: createDay.month(),
                         date: createDay.format("L"),
                         disableSelected: self.disableSelected,
+                        vacationStyle: createDay.format('dddd') === "جمعه",
                     });
                     self.disableSelected = false;
                 }
@@ -171,10 +173,12 @@
                             year: time.year,
                             date: time.date,
                             disableStyle: time.disableStyle,
+                            vacationStyle: time.vacationStyle,
                             disableSelected: false,
                         });
                     }, self);
                 }
+                console.log(this.dayOfCalender);
             },
             getBeforeMonthDate(year, month) {
                 let firstDay = new persianDate([year, month, 1]).toLocale('en').format('d');
@@ -190,6 +194,7 @@
                             year: createDay.year(),
                             month: createDay.month(),
                             date: createDay.format("L"),
+                            vacationStyle: createDay.format('dddd') === "جمعه",
                             disableStyle: true,
                         });
                     }
@@ -198,9 +203,8 @@
                 return [];
             },
             getAfterMonthDate(year, month) {
-                console.log(new persianDate([year]).isLeapYear());
                 let minusDay = 35;
-                if (new persianDate([year]).isLeapYear() === true && month === 12)
+                if (this.dayOfCalender.length > 35)
                     minusDay = 42;
                 let afterDay = minusDay - this.dayOfCalender.length;
                 if (afterDay > 0) {
@@ -213,6 +217,7 @@
                             year: createDay.year(),
                             month: createDay.month(),
                             date: createDay.format("L"),
+                            vacationStyle: createDay.format('dddd') === "جمعه",
                             disableStyle: true,
                         });
                     }
@@ -641,6 +646,10 @@
 
     .disableStyle {
         color: #b3b0b0 !important;
+    }
+
+    .vacationStyle {
+        color: red !important;
     }
 
     .day_selected {
