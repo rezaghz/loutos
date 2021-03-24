@@ -91,12 +91,17 @@
                 </a>
             </div>
         </div>
+        <copyright></copyright>
+
     </div>
 </template>
 
 <script>
+    import Copyright from './Partials/Copyright';
+
     export default {
         name: 'home',
+        components: {Copyright},
         data() {
             return {
                 title: "",
@@ -157,6 +162,19 @@
                     });
                     self.disableSelected = false;
                 }
+                let afterMonthDate = this.getAfterMonthDate(year, month);
+                if (afterMonthDate.length > 0) {
+                    afterMonthDate.forEach(function (time) {
+                        self.dayOfCalender.push({
+                            day: time.day,
+                            month: time.month,
+                            year: time.year,
+                            date: time.date,
+                            disableStyle: time.disableStyle,
+                            disableSelected: false,
+                        });
+                    }, self);
+                }
             },
             getBeforeMonthDate(year, month) {
                 let firstDay = new persianDate([year, month, 1]).toLocale('en').format('d');
@@ -178,6 +196,28 @@
                     return extraDay;
                 }
                 return [];
+            },
+            getAfterMonthDate(year, month) {
+                console.log(new persianDate([year]).isLeapYear());
+                let minusDay = 35;
+                if (new persianDate([year]).isLeapYear() === true && month === 12)
+                    minusDay = 42;
+                let afterDay = minusDay - this.dayOfCalender.length;
+                if (afterDay > 0) {
+                    let afterMonth = new persianDate([year, month, 1]).add('M', 1).toLocale('fa');
+                    let extraDay = [];
+                    for (let counter = 1; counter <= afterDay; counter++) {
+                        let createDay = new persianDate([afterMonth.year(), afterMonth.month(), counter]);
+                        extraDay.push({
+                            day: createDay.date(),
+                            year: createDay.year(),
+                            month: createDay.month(),
+                            date: createDay.format("L"),
+                            disableStyle: true,
+                        });
+                    }
+                    return extraDay;
+                } else return [];
             },
             prevMonth() {
                 //showLoading();
