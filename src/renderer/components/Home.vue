@@ -7,8 +7,15 @@
                         <i class="fa fa-angle-right"></i>
                         <span>ماه قبل</span>
                     </div>
-                    <div class="month-now">
+                    <div class=" month-now ">
+                        <div class="clearfix"></div>
                         <span>{{shamsi_title}}</span>
+                        <div class="clearfix"></div>
+                        <span class="d-block mt-2 miladi_in_table ">{{miladi_title}}</span>
+                        <div class="clearfix"></div>
+                        <span class="d-block mt-2 qamari_in_table">{{qamari_title}}</span>
+                        <div class="clearfix"></div>
+
                     </div>
                     <div class="month-last" @click="nextMonth()">
                         <span>ماه بعد</span>
@@ -46,7 +53,7 @@
                 <div class="clear"></div>
             </div>
             <div class="dd-calendar">
-                <div class="d-flex align-items-center justify-content-between dd-calendar-in">
+                <div class="d-flex align-items-center justify-content-between dd-calendar-in mt-2">
                     <div class="calendar-in">
                         <span class="calendar-in-span">{{shamsi_header_date}}</span>
                         <div class="clearfix"></div>
@@ -122,6 +129,8 @@
         data() {
             return {
                 shamsi_title: "",
+                miladi_title: "",
+                qamari_title: "",
                 month: "",
                 year: "",
                 day: "",
@@ -143,10 +152,10 @@
             this.month = today.month();
             this.day = today.date();
             this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
+            this.createMiladiTitle(today.year(), today.month());
             this.createHeaderDate(today.year(), today.month(), today.date());
             this.createCalender(this.year, this.month);
         },
-
         methods: {
             createCalender(year, month) {
                 let dayInMonth = new persianDate([year, month]).daysInMonth();
@@ -210,9 +219,23 @@
                 this.shamsi_header_date = date.format("D") + " " + date.toLocale('fa').format('MMMM') + " " + date.year();
                 this.miladi_header_date = this.shamsi_to_miladi(persian_year, persian_month, persian_day);
                 this.qamari_header_date = this.shamsi_to_qamari(persian_year, persian_month, persian_day, "iD iMMMM iYYYY");
-                this.shamsi_header_numeral = date.year() + "/" + date.toLocale('fa').format('MM') + "/"+ date.format("D");
-                this.miladi_header_numeral = this.shamsi_to_miladi(persian_year, persian_month, persian_day,"L");
+                this.shamsi_header_numeral = date.year() + "/" + date.toLocale('fa').format('MM') + "/" + date.format("D");
+                this.miladi_header_numeral = this.shamsi_to_miladi(persian_year, persian_month, persian_day, "L");
                 this.qamari_header_numeral = this.shamsi_to_qamari(persian_year, persian_month, persian_day, "iYYYY/iMM/iD");
+            },
+            createQamariTitle() {
+                /*this.qamari_title =today.subtract('month', 1).toCalendar('gregorian').toLocale('en').format('MMMM') + " - " + today.toCalendar('gregorian').toLocale('en').format('MMMM') +" " + today.toCalendar('gregorian').toLocale('en').year(); */
+            },
+            createMiladiTitle(year, month) {
+                let processYear = "";
+                let before_month = new persianDate([year, month, 1]).toCalendar('gregorian').toLocale('en').format("MMMM");
+                let before_year = new persianDate([year, month, 1]).toCalendar('gregorian').toLocale('en').format("YYYY");
+                let current_month = new persianDate([year, month, 29]).toCalendar('gregorian').toLocale('en').format("MMMM");
+                let current_year = new persianDate([year, month, 29]).toCalendar('gregorian').toLocale('en').format("YYYY");
+                if (before_year !== current_year){
+                    processYear = " "+before_year;
+                }
+                this.miladi_title = before_month + processYear + " - " + current_month + " " + current_year;
             },
             goToday() {
                 this.showGoTodayBtn = false;
@@ -221,6 +244,7 @@
                 this.month = today.month();
                 this.day = today.date();
                 this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
+                this.createMiladiTitle(today.year(), today.month());
                 this.createHeaderDate(today.year(), today.month(), today.date());
                 this.createCalender(this.year, this.month);
             },
@@ -271,6 +295,7 @@
             prevMonth() {
                 this.showGoTodayBtn = true;
                 let prevMonth = new persianDate([this.year, this.month, 10]).subtract('M', 1);
+                this.createMiladiTitle(prevMonth.year(), prevMonth.month());
                 this.createCalender(prevMonth.year(), prevMonth.month());
                 this.processDate(prevMonth.year(), prevMonth.month());
             }
@@ -278,6 +303,7 @@
             nextMonth() {
                 this.showGoTodayBtn = true;
                 let nextMonth = new persianDate([this.year, this.month, 10]).add('M', 1);
+                this.createMiladiTitle(nextMonth.year(), nextMonth.month());
                 this.createCalender(nextMonth.year(), nextMonth.month());
                 this.processDate(nextMonth.year(), nextMonth.month());
             },
@@ -478,18 +504,19 @@
 
     .month-now {
         width: 40%;
-        height: 40px;
+        height: 90px;
         float: right;
-        display: flex;
+        display: inline;
         display: -ms-flexbox;
         align-items: center;
         -ms-flex-align: center;
         justify-content: center;
         -ms-flex-pack: center;
+        text-align: center;
     }
 
     .month-now span {
-        font-size: 18px;
+        font-size: 20px;
         color: #343890;
         font-weight: bold;
     }
@@ -725,6 +752,19 @@
         font-weight: bold;
     }
 
+    .miladi_in_table {
+        font-size: 15px !important;
+        color: #222 !important;
+        letter-spacing: 0 !important;
+        font-weight: normal !important;
+    }
+
+    .qamari_in_table {
+        font-size: 14px !important;
+        letter-spacing: 0 !important;
+        color: #949494 !important;
+    }
+
     .go_today {
         display: block;
         position: absolute;
@@ -743,6 +783,7 @@
         .calendar-in-span {
             font-size: 15px;
         }
+
         .small_header {
             font-size: 13px;
         }
