@@ -33,8 +33,7 @@
                             <div class="day-cell-item">
                                 <div class="day-cell-item-inner" :class="[{day_selected : value.disableSelected}]">
                                     <span :class="{disableStyle : value.disableStyle,vacationStyle : value.vacationStyle}">
-{{value.shamsi_day}}
-                                    </span>
+{{value.shamsi_day}}</span>
                                 </div>
                                 <div class="miladi small" style="float:right">{{value.miladi_day}}</div>
                                 <div class="qamari small" style="float:left">{{value.qamari_day}}</div>
@@ -50,12 +49,18 @@
                 <div class="d-flex align-items-center justify-content-between dd-calendar-in">
                     <div class="calendar-in">
                         <span class="calendar-in-span">{{shamsi_header_date}}</span>
+                        <div class="clearfix"></div>
+                        <span class="calendar-in-span small_header d-block mt-3">{{shamsi_header_numeral}}</span>
                     </div>
                     <div class="calender-in">
                         <span dir="ltr" class="calendar-in-span d-inline-block miladi ">{{miladi_header_date}}</span>
+                        <div class="clearfix"></div>
+                        <span class="calendar-in-span small_header d-block mt-3">{{miladi_header_numeral}}</span>
                     </div>
                     <div class="calendar-in">
                         <span class="calendar-in-span">{{qamari_header_date}}</span>
+                        <div class="clearfix"></div>
+                        <span class="calendar-in-span small_header d-block mt-3">{{qamari_header_numeral}}</span>
                     </div>
 
                     <!--<div class="calendar-btn d-flex justify-content-center align-items-center">
@@ -110,6 +115,7 @@
 
 <script>
     import Sidebar from './Partials/Sidebar';
+
     export default {
         name: 'home',
         components: {Sidebar},
@@ -124,8 +130,11 @@
                 showGoTodayBtn: false,
                 calenderCourse: [],
                 shamsi_header_date: "",
-                miladi_header_date : "",
-                qamari_header_date:"",
+                miladi_header_date: "",
+                qamari_header_date: "",
+                shamsi_header_numeral: "",
+                miladi_header_numeral: "",
+                qamari_header_numeral: "",
             }
         },
         mounted() {
@@ -134,7 +143,7 @@
             this.month = today.month();
             this.day = today.date();
             this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
-            this.createHeaderDate(today.year(),today.month(),today.date());
+            this.createHeaderDate(today.year(), today.month(), today.date());
             this.createCalender(this.year, this.month);
         },
 
@@ -196,6 +205,15 @@
                 }
                 console.log(this.dayOfCalender);
             },
+            createHeaderDate(persian_year, persian_month, persian_day) {
+                let date = new persianDate([persian_year, persian_month, persian_day]);
+                this.shamsi_header_date = date.format("D") + " " + date.toLocale('fa').format('MMMM') + " " + date.year();
+                this.miladi_header_date = this.shamsi_to_miladi(persian_year, persian_month, persian_day);
+                this.qamari_header_date = this.shamsi_to_qamari(persian_year, persian_month, persian_day, "iD iMMMM iYYYY");
+                this.shamsi_header_numeral = date.year() + "/" + date.toLocale('fa').format('MM') + "/"+ date.format("D");
+                this.miladi_header_numeral = this.shamsi_to_miladi(persian_year, persian_month, persian_day,"L");
+                this.qamari_header_numeral = this.shamsi_to_qamari(persian_year, persian_month, persian_day, "iYYYY/iMM/iD");
+            },
             goToday() {
                 this.showGoTodayBtn = false;
                 let today = new persianDate();
@@ -203,7 +221,7 @@
                 this.month = today.month();
                 this.day = today.date();
                 this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
-                this.createHeaderDate(today.year(),today.month(),today.date());
+                this.createHeaderDate(today.year(), today.month(), today.date());
                 this.createCalender(this.year, this.month);
             },
             getBeforeMonthDate(year, month) {
@@ -270,10 +288,7 @@
                 this.shamsi_title = set.toLocale('fa').format('MMMM') + " " + set.year();
             },
             getDateDetail(year, month, day) {
-                this.createHeaderDate(year,month,day);
-            },
-            open(link) {
-                this.$electron.shell.openExternal(link)
+                this.createHeaderDate(year, month, day);
             },
             shamsi_to_miladi(year, month, day, format = "LL") {
                 return new persianDate([year, month, day]).toCalendar('gregorian').toLocale('en').format(format);
@@ -283,12 +298,6 @@
                 let my = miladi_date.format("YYYY/MM/DD");
                 return moment(my).subtract("days", 1).format(format);
             },
-            createHeaderDate(persian_year,persian_month,persian_day) {
-                let date = new persianDate([persian_year, persian_month, persian_day]);
-                this.shamsi_header_date = date.format("D") + " " + date.toLocale('fa').format('MMMM')+ " "  + date.year();
-                this.miladi_header_date = this.shamsi_to_miladi(persian_year,persian_month,persian_day);
-                this.qamari_header_date = this.shamsi_to_qamari(persian_year,persian_month,persian_day,"iD iMMMM iYYYY");
-            }
         }
     }
 </script>
@@ -710,6 +719,12 @@
         font-size: 11px;
     }
 
+    .small_header {
+        font-size: 13px;
+        text-align: center;
+        font-weight: bold;
+    }
+
     .go_today {
         display: block;
         position: absolute;
@@ -722,6 +737,15 @@
         background-color: #ff4552;
         display: block;
         color: white;
+    }
+
+    @media only screen and (max-width: 1200px) {
+        .calendar-in-span {
+            font-size: 15px;
+        }
+        .small_header {
+            font-size: 13px;
+        }
     }
 
     /* dashboard */
