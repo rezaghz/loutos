@@ -52,7 +52,7 @@
                         <span class="calendar-in-span">{{shamsi_header_date}}</span>
                     </div>
                     <div class="calender-in">
-                        <span dir="ltr" class="calendar-in-span d-inline-block miladi ">28 May 2012 </span>
+                        <span dir="ltr" class="calendar-in-span d-inline-block miladi ">{{miladi_header_date}}</span>
                     </div>
                     <!--<div class="calendar-btn d-flex justify-content-center align-items-center">
                         ثبت یادآور
@@ -106,7 +106,6 @@
 
 <script>
     import Sidebar from './Partials/Sidebar';
-
     export default {
         name: 'home',
         components: {Sidebar},
@@ -121,6 +120,7 @@
                 showGoTodayBtn: false,
                 calenderCourse: [],
                 shamsi_header_date: "",
+                miladi_header_date : "",
             }
         },
         mounted() {
@@ -130,6 +130,7 @@
             this.day = today.date();
             this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
             this.shamsi_header_date = today.format("D") + " " + today.toLocale('fa').format('MMMM')+ " " + today.year();
+            this.miladi_header_date = this.shamsi_to_miladi(today.year(),today.month(),today.date());
             this.createCalender(this.year, this.month);
         },
 
@@ -199,6 +200,7 @@
                 this.day = today.date();
                 this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
                 this.shamsi_header_date = today.format("D") + " " + today.toLocale('fa').format('MMMM')+ " " + today.year();
+                this.miladi_header_date = this.shamsi_to_miladi(today.year(),today.month(),today.date());
                 this.createCalender(this.year, this.month);
             },
             getBeforeMonthDate(year, month) {
@@ -267,6 +269,7 @@
             getDateDetail(year, month, day) {
                 let date = new persianDate([year, month, day]);
                 this.shamsi_header_date = date.format("D") + " " + date.toLocale('fa').format('MMMM')+ " "  + year;
+                this.miladi_header_date = this.shamsi_to_miladi(year, month, day);
             },
             open(link) {
                 this.$electron.shell.openExternal(link)
