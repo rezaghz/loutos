@@ -52,7 +52,7 @@
                         <span class="calendar-in-span">{{boldDate.day}} <span>{{boldDate.year}}</span></span>
                     </div>
                     <div class="calendar-btn d-flex justify-content-center align-items-center">
-                        کلاس دارید
+                        ثبت یادآور
                     </div>
                 </div>
                 <ul class="list-class-date">
@@ -93,21 +93,20 @@
                     <i class="fa fa-video-camera"></i> شرکت در کلاس جدید
                 </a>
                 <div class="go_today" @click="goToday()" v-if="showGoTodayBtn">
-                    <button  class="btn btn-danger rounded-circle"><i class="fa fa-arrow-right"></i></button>
+                    <button class="btn rounded-circle"><i class="fa fa-arrow-right"></i></button>
                 </div>
             </div>
         </div>
-        <copyright></copyright>
-
+        <sidebar></sidebar>
     </div>
 </template>
 
 <script>
-    import Copyright from './Partials/Copyright';
+    import Sidebar from './Partials/Sidebar';
 
     export default {
         name: 'home',
-        components: {Copyright},
+        components: {Sidebar},
         data() {
             return {
                 shamsi_title: "",
@@ -116,7 +115,7 @@
                 day: "",
                 dayOfCalender: [],
                 disableSelected: false,
-                showGoTodayBtn : false,
+                showGoTodayBtn: false,
                 calenderCourse: [],
                 boldDate: {
                     date: "",
@@ -195,7 +194,7 @@
                 }
                 console.log(this.dayOfCalender);
             },
-            goToday(){
+            goToday() {
                 this.showGoTodayBtn = false;
                 let today = new persianDate();
                 this.year = today.year();
@@ -713,8 +712,10 @@
         bottom: 20px;
         right: 10px;
     }
+
     .go_today button {
         text-align: center;
+        background-color: #ff4552;
         display: block;
         color: white;
     }
