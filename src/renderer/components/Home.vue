@@ -54,6 +54,10 @@
                     <div class="calender-in">
                         <span dir="ltr" class="calendar-in-span d-inline-block miladi ">{{miladi_header_date}}</span>
                     </div>
+                    <div class="calendar-in">
+                        <span class="calendar-in-span">{{qamari_header_date}}</span>
+                    </div>
+
                     <!--<div class="calendar-btn d-flex justify-content-center align-items-center">
                         ثبت یادآور
                     </div>-->
@@ -121,6 +125,7 @@
                 calenderCourse: [],
                 shamsi_header_date: "",
                 miladi_header_date : "",
+                qamari_header_date:"",
             }
         },
         mounted() {
@@ -129,8 +134,7 @@
             this.month = today.month();
             this.day = today.date();
             this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
-            this.shamsi_header_date = today.format("D") + " " + today.toLocale('fa').format('MMMM')+ " " + today.year();
-            this.miladi_header_date = this.shamsi_to_miladi(today.year(),today.month(),today.date());
+            this.createHeaderDate(today.year(),today.month(),today.date());
             this.createCalender(this.year, this.month);
         },
 
@@ -199,8 +203,7 @@
                 this.month = today.month();
                 this.day = today.date();
                 this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
-                this.shamsi_header_date = today.format("D") + " " + today.toLocale('fa').format('MMMM')+ " " + today.year();
-                this.miladi_header_date = this.shamsi_to_miladi(today.year(),today.month(),today.date());
+                this.createHeaderDate(today.year(),today.month(),today.date());
                 this.createCalender(this.year, this.month);
             },
             getBeforeMonthDate(year, month) {
@@ -267,9 +270,7 @@
                 this.shamsi_title = set.toLocale('fa').format('MMMM') + " " + set.year();
             },
             getDateDetail(year, month, day) {
-                let date = new persianDate([year, month, day]);
-                this.shamsi_header_date = date.format("D") + " " + date.toLocale('fa').format('MMMM')+ " "  + year;
-                this.miladi_header_date = this.shamsi_to_miladi(year, month, day);
+                this.createHeaderDate(year,month,day);
             },
             open(link) {
                 this.$electron.shell.openExternal(link)
@@ -281,6 +282,12 @@
                 let miladi_date = new persianDate([year, month, day]).toCalendar('gregorian').toLocale('en');
                 let my = miladi_date.format("YYYY/MM/DD");
                 return moment(my).subtract("days", 1).format(format);
+            },
+            createHeaderDate(persian_year,persian_month,persian_day) {
+                let date = new persianDate([persian_year, persian_month, persian_day]);
+                this.shamsi_header_date = date.format("D") + " " + date.toLocale('fa').format('MMMM')+ " "  + date.year();
+                this.miladi_header_date = this.shamsi_to_miladi(persian_year,persian_month,persian_day);
+                this.qamari_header_date = this.shamsi_to_qamari(persian_year,persian_month,persian_day,"iD iMMMM iYYYY");
             }
         }
     }
