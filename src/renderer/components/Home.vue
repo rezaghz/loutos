@@ -15,7 +15,6 @@
                         <div class="clearfix"></div>
                         <span class="d-block mt-2 qamari_in_table">{{qamari_title}}</span>
                         <div class="clearfix"></div>
-
                     </div>
                     <div class="month-last" @click="nextMonth()">
                         <span>ماه بعد</span>
@@ -153,6 +152,7 @@
             this.day = today.date();
             this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
             this.createMiladiTitle(today.year(), today.month());
+            this.createQamariTitle(today.year(), today.month())
             this.createHeaderDate(today.year(), today.month(), today.date());
             this.createCalender(this.year, this.month);
         },
@@ -223,8 +223,16 @@
                 this.miladi_header_numeral = this.shamsi_to_miladi(persian_year, persian_month, persian_day, "L");
                 this.qamari_header_numeral = this.shamsi_to_qamari(persian_year, persian_month, persian_day, "iYYYY/iMM/iD");
             },
-            createQamariTitle() {
-                /*this.qamari_title =today.subtract('month', 1).toCalendar('gregorian').toLocale('en').format('MMMM') + " - " + today.toCalendar('gregorian').toLocale('en').format('MMMM') +" " + today.toCalendar('gregorian').toLocale('en').year(); */
+            createQamariTitle(year, month) {
+                let processYear = "";
+                let currentMonth = this.shamsi_to_qamari(year, month,1,"iMMMM");
+                let currentYear = this.shamsi_to_qamari(year, month,1,"iYYYY");
+                let endMonth = this.shamsi_to_qamari(year, month,30,"iMMMM");
+                let endYear = this.shamsi_to_qamari(year, month,30,"iYYYY");
+                if (currentYear !== endYear){
+                    processYear = " " + currentYear;
+                }
+                this.qamari_title = currentMonth + processYear + " - " + endMonth + " " + endYear;
             },
             createMiladiTitle(year, month) {
                 let processYear = "";
@@ -232,8 +240,8 @@
                 let before_year = new persianDate([year, month, 1]).toCalendar('gregorian').toLocale('en').format("YYYY");
                 let current_month = new persianDate([year, month, 29]).toCalendar('gregorian').toLocale('en').format("MMMM");
                 let current_year = new persianDate([year, month, 29]).toCalendar('gregorian').toLocale('en').format("YYYY");
-                if (before_year !== current_year){
-                    processYear = " "+before_year;
+                if (before_year !== current_year) {
+                    processYear = " " + before_year;
                 }
                 this.miladi_title = before_month + processYear + " - " + current_month + " " + current_year;
             },
@@ -245,6 +253,7 @@
                 this.day = today.date();
                 this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
                 this.createMiladiTitle(today.year(), today.month());
+                this.createQamariTitle(today.year(), today.month());
                 this.createHeaderDate(today.year(), today.month(), today.date());
                 this.createCalender(this.year, this.month);
             },
@@ -296,6 +305,7 @@
                 this.showGoTodayBtn = true;
                 let prevMonth = new persianDate([this.year, this.month, 10]).subtract('M', 1);
                 this.createMiladiTitle(prevMonth.year(), prevMonth.month());
+                this.createQamariTitle(prevMonth.year(), prevMonth.month());
                 this.createCalender(prevMonth.year(), prevMonth.month());
                 this.processDate(prevMonth.year(), prevMonth.month());
             }
@@ -304,6 +314,7 @@
                 this.showGoTodayBtn = true;
                 let nextMonth = new persianDate([this.year, this.month, 10]).add('M', 1);
                 this.createMiladiTitle(nextMonth.year(), nextMonth.month());
+                this.createQamariTitle(nextMonth.year(), nextMonth.month());
                 this.createCalender(nextMonth.year(), nextMonth.month());
                 this.processDate(nextMonth.year(), nextMonth.month());
             },
@@ -753,6 +764,7 @@
     }
 
     .miladi_in_table {
+        font-family: SansSerif,Arial !important;
         font-size: 15px !important;
         color: #222 !important;
         letter-spacing: 0 !important;
