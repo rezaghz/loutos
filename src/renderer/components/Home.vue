@@ -49,11 +49,14 @@
             <div class="dd-calendar">
                 <div class="d-flex align-items-center justify-content-between dd-calendar-in">
                     <div class="calendar-in">
-                        <span class="calendar-in-span">{{boldDate.day}} <span>{{boldDate.year}}</span></span>
+                        <span class="calendar-in-span">{{shamsi_header_date}}</span>
                     </div>
-                    <div class="calendar-btn d-flex justify-content-center align-items-center">
+                    <div class="calender-in">
+                        <span dir="ltr" class="calendar-in-span d-inline-block miladi ">28 May 2012 </span>
+                    </div>
+                    <!--<div class="calendar-btn d-flex justify-content-center align-items-center">
                         ثبت یادآور
-                    </div>
+                    </div>-->
                 </div>
                 <ul class="list-class-date">
                     <li>
@@ -117,10 +120,7 @@
                 disableSelected: false,
                 showGoTodayBtn: false,
                 calenderCourse: [],
-                boldDate: {
-                    date: "",
-                    year: ""
-                }
+                shamsi_header_date: "",
             }
         },
         mounted() {
@@ -129,10 +129,7 @@
             this.month = today.month();
             this.day = today.date();
             this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
-            this.boldDate = {
-                day: today.format("D") + " " + today.toLocale('fa').format('MMMM'),
-                year: today.year(),
-            }
+            this.shamsi_header_date = today.format("D") + " " + today.toLocale('fa').format('MMMM')+ " " + today.year();
             this.createCalender(this.year, this.month);
         },
 
@@ -201,10 +198,7 @@
                 this.month = today.month();
                 this.day = today.date();
                 this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
-                this.boldDate = {
-                    day: today.format("D") + " " + today.toLocale('fa').format('MMMM'),
-                    year: today.year(),
-                }
+                this.shamsi_header_date = today.format("D") + " " + today.toLocale('fa').format('MMMM')+ " " + today.year();
                 this.createCalender(this.year, this.month);
             },
             getBeforeMonthDate(year, month) {
@@ -272,10 +266,7 @@
             },
             getDateDetail(year, month, day) {
                 let date = new persianDate([year, month, day]);
-                this.boldDate = {
-                    day: date.format("D") + " " + date.toLocale('fa').format('MMMM'),
-                    year: year,
-                }
+                this.shamsi_header_date = date.format("D") + " " + date.toLocale('fa').format('MMMM')+ " "  + year;
             },
             open(link) {
                 this.$electron.shell.openExternal(link)
@@ -701,8 +692,11 @@
         font-size: 13px;
     }
 
-    .miladi.small {
+    .miladi {
         font-family: Tahoma, serif;
+    }
+
+    .miladi.small {
         font-size: 11px;
     }
 
