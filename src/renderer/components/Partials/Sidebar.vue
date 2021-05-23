@@ -7,10 +7,12 @@
         </div>
         <div id="box">
             <div id="items">
-                <router-link to="/landing">
+                <router-link to="/">
                     <div class="item"><i class="fa fa-calendar"></i> تقویم</div>
                 </router-link>
-                <div class="item"><i class="fa fa-sticky-note"></i> دفترچه یادداشت</div>
+                <router-link to="/notes">
+                    <div class="item"><i class="fa fa-sticky-note"></i> دفترچه یادداشت</div>
+                </router-link>
                 <div class="item"><i class="fa fa-check-square"></i> چک لیست</div>
                 <div class="item"><i class="fa fa-exchange"></i> تبدیل تاریخ</div>
                 <div class="item"><i class="fa fa-cog"></i> تنظیمات</div>
@@ -30,7 +32,6 @@
         mounted() {
             const sidebarBox = document.querySelector('#box'),
                 sidebarBtn = document.querySelector('#btn');
-
             sidebarBtn.addEventListener('click', event => {
                 sidebarBtn.classList.toggle('active');
                 sidebarBox.classList.toggle('active');
@@ -43,6 +44,10 @@
                 if (sidebarBox.classList.contains('active') && event.keyCode === 27) {
                     sidebarBtn.classList.remove('active');
                     sidebarBox.classList.remove('active');
+                    if(sidebarBox.style.display === "" || sidebarBox.style.display === "none")
+                        sidebarBox.style.display = "block";
+                    else
+                        sidebarBox.style.display = "none";
                 }
             });
         },

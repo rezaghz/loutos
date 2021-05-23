@@ -34,7 +34,7 @@
 
                 <div class="days-body">
                     <div class="day-cell" @click="getDateDetail(value.year,value.month,value.shamsi_day)"
-                         v-for="value in dayOfCalender">
+                         v-for="value in dayOfCalendar">
                         <div class="day-cell-inner">
                             <div class="day-cell-item">
                                 <div class="day-cell-item-inner" :class="[{day_selected : value.disableSelected}]">
@@ -58,20 +58,16 @@
                         <div class="clearfix"></div>
                         <span class="calendar-in-span small_header d-block mt-3">{{shamsi_header_numeral}}</span>
                     </div>
-                    <div class="calender-in">
+                    <div class="Calendar-in">
                         <span dir="ltr" class="calendar-in-span d-inline-block miladi ">{{miladi_header_date}}</span>
                         <div class="clearfix"></div>
-                        <span class="calendar-in-span small_header d-block mt-3">{{miladi_header_numeral}}</span>
+                        <span class="calendar-in-span small_header d-block mt-3 miladi">{{miladi_header_numeral}}</span>
                     </div>
                     <div class="calendar-in">
                         <span class="calendar-in-span">{{qamari_header_date}}</span>
                         <div class="clearfix"></div>
                         <span class="calendar-in-span small_header d-block mt-3">{{qamari_header_numeral}}</span>
                     </div>
-
-                    <!--<div class="calendar-btn d-flex justify-content-center align-items-center">
-                        ثبت یادآور
-                    </div>-->
                 </div>
                 <ul class="list-class-date">
                     <li>
@@ -107,9 +103,12 @@
                         </a>
                     </li>
                 </ul>
-                <a href="#" class="new-class d-flex align-items-center justify-content-center transition-5">
+                <div class="calendar-btn d-flex justify-content-center align-items-center">
+                        <i class="fa fa-plus"></i> ثبت یادآور
+                    </div>
+                <!--<a href="#" class="new-class d-flex align-items-center justify-content-center transition-5">
                     <i class="fa fa-video-camera"></i> شرکت در کلاس جدید
-                </a>
+                </a>-->
                 <div class="go_today" @click="goToday()" v-if="showGoTodayBtn">
                     <button class="btn rounded-circle"><i class="fa fa-arrow-right"></i></button>
                 </div>
@@ -133,10 +132,10 @@
                 month: "",
                 year: "",
                 day: "",
-                dayOfCalender: [],
+                dayOfCalendar: [],
                 disableSelected: false,
                 showGoTodayBtn: false,
-                calenderCourse: [],
+                CalendarCourse: [],
                 shamsi_header_date: "",
                 miladi_header_date: "",
                 qamari_header_date: "",
@@ -154,19 +153,19 @@
             this.createMiladiTitle(today.year(), today.month());
             this.createQamariTitle(today.year(), today.month())
             this.createHeaderDate(today.year(), today.month(), today.date());
-            this.createCalender(this.year, this.month);
+            this.createCalendar(this.year, this.month);
         },
         methods: {
-            createCalender(year, month) {
+            createCalendar(year, month) {
                 let dayInMonth = new persianDate([year, month]).daysInMonth();
                 let beforeMonthDate = this.getBeforeMonthDate(year, month);
                 let self = this;
                 let today = new persianDate();
-                this.dayOfCalender = [];
+                this.dayOfCalendar = [];
                 // Before Deselected Month
                 if (beforeMonthDate.length > 0) {
                     beforeMonthDate.forEach(function (time) {
-                        self.dayOfCalender.push({
+                        self.dayOfCalendar.push({
                             shamsi_day: time.day,
                             miladi_day: this.shamsi_to_miladi(time.year, time.month, time.day, "DD"),
                             qamari_day: this.shamsi_to_qamari(time.year, time.month, time.day, "iDD"),
@@ -184,7 +183,7 @@
                 for (counter = 1; counter <= dayInMonth; counter++) {
                     let createDay = new persianDate([year, month, counter]);
                     let showSelected = today.date() === createDay.date() && today.year() === createDay.year() && today.month() === createDay.month();
-                    self.dayOfCalender.push({
+                    self.dayOfCalendar.push({
                         shamsi_day: createDay.date(),
                         miladi_day: this.shamsi_to_miladi(createDay.year(), createDay.month(), createDay.date(), "DD"),
                         qamari_day: this.shamsi_to_qamari(createDay.year(), createDay.month(), createDay.date(), "iDD"),
@@ -199,7 +198,7 @@
                 let afterMonthDate = this.getAfterMonthDate(year, month);
                 if (afterMonthDate.length > 0) {
                     afterMonthDate.forEach(function (time) {
-                        self.dayOfCalender.push({
+                        self.dayOfCalendar.push({
                             shamsi_day: time.day,
                             miladi_day: this.shamsi_to_miladi(time.year, time.month, time.day, "DD"),
                             qamari_day: this.shamsi_to_qamari(time.year, time.month, time.day, "iDD"),
@@ -212,7 +211,7 @@
                         });
                     }, self);
                 }
-                console.log(this.dayOfCalender);
+                console.log(this.dayOfCalendar);
             },
             createHeaderDate(persian_year, persian_month, persian_day) {
                 let date = new persianDate([persian_year, persian_month, persian_day]);
@@ -255,7 +254,7 @@
                 this.createMiladiTitle(today.year(), today.month());
                 this.createQamariTitle(today.year(), today.month());
                 this.createHeaderDate(today.year(), today.month(), today.date());
-                this.createCalender(this.year, this.month);
+                this.createCalendar(this.year, this.month);
             },
             getBeforeMonthDate(year, month) {
                 let firstDay = new persianDate([year, month, 1]).toLocale('en').format('d');
@@ -281,9 +280,9 @@
             },
             getAfterMonthDate(year, month) {
                 let minusDay = 35;
-                if (this.dayOfCalender.length > 35)
+                if (this.dayOfCalendar.length > 35)
                     minusDay = 42;
-                let afterDay = minusDay - this.dayOfCalender.length;
+                let afterDay = minusDay - this.dayOfCalendar.length;
                 if (afterDay > 0) {
                     let afterMonth = new persianDate([year, month, 1]).add('M', 1).toLocale('fa');
                     let extraDay = [];
@@ -306,7 +305,7 @@
                 let prevMonth = new persianDate([this.year, this.month, 10]).subtract('M', 1);
                 this.createMiladiTitle(prevMonth.year(), prevMonth.month());
                 this.createQamariTitle(prevMonth.year(), prevMonth.month());
-                this.createCalender(prevMonth.year(), prevMonth.month());
+                this.createCalendar(prevMonth.year(), prevMonth.month());
                 this.processDate(prevMonth.year(), prevMonth.month());
             }
             ,
@@ -315,7 +314,7 @@
                 let nextMonth = new persianDate([this.year, this.month, 10]).add('M', 1);
                 this.createMiladiTitle(nextMonth.year(), nextMonth.month());
                 this.createQamariTitle(nextMonth.year(), nextMonth.month());
-                this.createCalender(nextMonth.year(), nextMonth.month());
+                this.createCalendar(nextMonth.year(), nextMonth.month());
                 this.processDate(nextMonth.year(), nextMonth.month());
             },
             processDate(year, month) {
@@ -333,30 +332,20 @@
             shamsi_to_qamari(year, month, day, format = "iMMMM") {
                 let miladi_date = new persianDate([year, month, day]).toCalendar('gregorian').toLocale('en');
                 let my = miladi_date.format("YYYY/MM/DD");
-                return moment(my).subtract("days", 1).format(format);
+                return moment(my).format(format);
             },
         }
     }
 </script>
 
 <style>
-    /* dashboard */
 
-    .dashboard {
-        border-radius: 10px;
-        background-color: rgb(255, 255, 255);
-        box-shadow: 0px 0px 5px 0px rgba(25, 25, 25, 0.15);
-        background-color: #fff;
-    }
-
-    .clear {
-        clear: both;
-    }
 
     .date-table {
         width: 60%;
         padding: 10px;
         position: relative;
+        cursor: default;
     }
 
     .days-head {
@@ -562,6 +551,7 @@
     }
 
     .calendar-in-span {
+        cursor: default;
         font-size: 58px;
         color: #00a651;
     }
@@ -575,11 +565,15 @@
 
     .calendar-btn {
         background-color: #ff4552;
-        width: 136px;
+        width: 100%;
         height: 45px;
         border-radius: 10px;
         font-size: 16px;
         color: #fff;
+        cursor: pointer;
+    }
+    .calendar-btn i{
+        padding: 0 5px;
     }
 
     .list-class-date li {
@@ -769,12 +763,15 @@
         color: #222 !important;
         letter-spacing: 0 !important;
         font-weight: normal !important;
+        white-space: nowrap;
     }
 
     .qamari_in_table {
         font-size: 14px !important;
         letter-spacing: 0 !important;
         color: #949494 !important;
+        white-space: nowrap;
+
     }
 
     .go_today {
@@ -799,6 +796,11 @@
         .small_header {
             font-size: 13px;
         }
+
+        .miladi_in_table {
+            font-size: 15px !important;
+        }
+        .qamari_in_table { font-size: 12px !important;}
     }
 
     /* dashboard */

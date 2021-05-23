@@ -27,6 +27,12 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently*/
 }
 
 input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
@@ -101,4 +107,17 @@ p, h1, h2, h3, h4, h5, h6, strong, div, a {
 
 .IRANSans {
     font-family: iransans, Tahoma, serif;
+}
+
+/* dashboard */
+
+.dashboard {
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 5px 0px rgba(25, 25, 25, 0.15);
+    background-color: #fff;
+}
+
+.clear {
+    clear: both;
 }

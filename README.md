@@ -1,6 +1,6 @@
-# calender
+# Calendar
 
-> Persian Calender
+> Persian Calendar
 
 #### Build Setup
 

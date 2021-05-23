@@ -1,8 +1,8 @@
 {
-  "name": "calender",
+  "name": "Calendar",
   "version": "0.0.1",
   "author": "Reza Ghasemzadeh <rezaghasemzadeh1@gmail.com>",
-  "description": "Persian Calender",
+  "description": "Persian Calendar",
   "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -17,8 +17,8 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "persian calender",
-    "appId": "com.rezaghz.persian.calender",
+    "productName": "persian Calendar",
+    "appId": "com.rezaghz.persian.Calendar",
     "directories": {
       "output": "build"
     },
@@ -58,6 +58,7 @@
     "vue": "^2.5.16",
     "vue-analog-clock": "^1.0.2",
     "vue-electron": "^1.0.6",
+    "vue-grid-layout": "^2.3.12",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
     "vuex-electron": "^1.0.0"

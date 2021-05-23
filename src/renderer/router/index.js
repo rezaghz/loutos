@@ -16,6 +16,11 @@ export default new Router({
       component: require('@/components/LandingPage').default
     },
     {
+      path: '/notes',
+      name: 'notes',
+      component: require('@/components/Pages/Notes').default
+    },
+    {
       path: '*',
       redirect: '/'
     }
