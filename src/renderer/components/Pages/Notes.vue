@@ -6,7 +6,7 @@
                     <span class="d-block h5 pr-2 pt-2">لیست یادداشت ها</span>
                 </div>
                 <div class="body pt-2">
-
+                    <p v-for="note in notes">{{note.title}}</p>
                 </div>
             </div>
             <div class="new" :style="{backgroundColor : background_color_new_body}">
@@ -41,6 +41,9 @@
 
 <script>
     import Sidebar from '../Partials/Sidebar';
+
+    var PouchDB = require('pouchdb').default;
+    var db = new PouchDB('notes');
 
     export default {
         name: "notes",
@@ -94,15 +97,56 @@
                         text_color: 'black',
                         is_white_place_holder: false,
                     },
-                ]
+                ],
+                notes: [],
             }
+        },
+        mounted() {
+            var self = this;
+            db.info().then(function (result) {
+                console.warn("connected successfully");
+            }).catch(function (err) {
+                console.log(err);
+            });
+            /*db.allDocs().then(function (result) {
+                // Promise isn't supported by all browsers; you may want to use bluebird
+                return Promise.all(result.rows.map(function (row) {
+                    return db.remove(row.id, row.value.rev);
+                }));
+            }).then(function () {
+                // done!
+            }).catch(function (err) {
+                // error!
+            });*/
+            db.allDocs({include_docs: true, descending: false}, function (err, doc) {
+                doc.rows.forEach(val => {
+                    let doc = val.doc;
+                    self.notes.push({
+                        title: doc.title,
+                        description: doc.description,
+                        color: doc.color,
+                    });
+                });
+            });
         },
         methods: {
             add() {
-                console.log(this.title)
-                console.log(this.description);
-                this.title = "";
-                this.description = "";
+                let self = this;
+                db.post({
+                    title: this.title,
+                    description: this.description,
+                    color: this.background_color_new_body,
+                }).then(function (response) {
+                    self.notes.unshift({
+                        title: self.title,
+                        description: self.description,
+                        color: self.background_color_new_body,
+                    });
+                    self.title = "";
+                    self.description = "";
+                }, self).catch(function (err) {
+                    console.log(err);
+                });
             },
             selectColor(index) {
                 for (var i in this.color_list) {
@@ -142,7 +186,7 @@
 
     .body {
         height: 600px;
-        /*overflow-y: scroll;*/
+        overflow-y: scroll;
     }
 
     .place_holder_color::placeholder {
