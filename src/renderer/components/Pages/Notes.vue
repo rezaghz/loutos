@@ -9,10 +9,10 @@
                     <div class="item d-flex flex-column pb-1 justify-content-around" v-for="note in notes"
                          :style="{backgroundColor : note.color}">
                         <div class="title">
-                            {{note.title}}
+                            <span>{{note.title}}</span>
                         </div>
                         <div class="description">
-                            {{note.limit_description}}
+                            <span> {{note.limit_description}}</span>
                         </div>
                     </div>
                 </div>
@@ -82,14 +82,14 @@
                     {
                         color: "#ea8685",
                         selected: false,
-                        text_color: 'black',
-                        is_white_place_holder: false,
+                        text_color: 'white',
+                        is_white_place_holder: true,
                     },
                     {
                         color: "#f3a683",
                         selected: false,
-                        text_color: 'black',
-                        is_white_place_holder: false,
+                        text_color: 'white',
+                        is_white_place_holder: true,
 
                     },
                     {
@@ -220,7 +220,7 @@
     }
 
     .place_holder_color::placeholder {
-        color: #e2e0e0 !important;
+        color: #ffffff !important;
     }
 
 
@@ -236,7 +236,7 @@
     }
 
     #input_new_title input::placeholder {
-        color: #323131;
+        color: #000000;
     }
 
 
@@ -257,7 +257,7 @@
     }
 
     #body_textarea::placeholder {
-        color: #323131;
+        color: #000000;
     }
 
     #add_note {
