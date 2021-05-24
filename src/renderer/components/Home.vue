@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <ul class="list-class-date">
-                    <li>
+               <!--     <li>
                         <a href="#" target="_blank" class="d-flex justify-content-between align-items-center">
                             <h2 class="IRANSans-Light list-class-date-s1 d-flex align-items-center"><i
                                     class="fa fa-video-camera"></i> لورم ایپسوم متن ساختگی </h2>
@@ -101,7 +101,7 @@
                             <div class="list-class-time d-flex align-items-center"><span class="list-class-time-s1">18:00</span>-<span
                                     class="list-class-time-s2">15:00</span> <i class="fa fa-angle-left"></i></div>
                         </a>
-                    </li>
+                    </li>-->
                 </ul>
                 <div class="calendar-btn d-flex justify-content-center align-items-center">
                         <i class="fa fa-plus"></i> ثبت یادآور
@@ -195,6 +195,7 @@
                     });
                     self.disableSelected = false;
                 }
+                // After Date
                 let afterMonthDate = this.getAfterMonthDate(year, month);
                 if (afterMonthDate.length > 0) {
                     afterMonthDate.forEach(function (time) {
@@ -211,7 +212,6 @@
                         });
                     }, self);
                 }
-                console.log(this.dayOfCalendar);
             },
             createHeaderDate(persian_year, persian_month, persian_day) {
                 let date = new persianDate([persian_year, persian_month, persian_day]);
@@ -565,12 +565,19 @@
 
     .calendar-btn {
         background-color: #ff4552;
-        width: 100%;
+        width: 95%;
         height: 45px;
         border-radius: 10px;
         font-size: 16px;
         color: #fff;
         cursor: pointer;
+        margin-bottom: 0 !important;
+        display: block;
+        justify-content: end;
+        position: absolute;
+        margin-top: 5;
+        bottom: 10px;
+        left: 10px;
     }
     .calendar-btn i{
         padding: 0 5px;
