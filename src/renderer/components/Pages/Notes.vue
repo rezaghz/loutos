@@ -6,7 +6,15 @@
                     <span class="d-block h5 pr-2 pt-2">لیست یادداشت ها</span>
                 </div>
                 <div class="body pt-2">
-                    <p v-for="note in notes">{{note.title}}</p>
+                    <div class="item d-flex flex-column pb-1 justify-content-around" v-for="note in notes"
+                         :style="{backgroundColor : note.color}">
+                        <div class="title">
+                            {{note.title}}
+                        </div>
+                        <div class="description">
+                            {{note.limit_description}}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="new" :style="{backgroundColor : background_color_new_body}">
@@ -48,7 +56,7 @@
     export default {
         name: "notes",
         components: {
-            Sidebar,
+            Sidebar
         },
         data() {
             return {
@@ -125,6 +133,7 @@
                         title: doc.title,
                         description: doc.description,
                         color: doc.color,
+                        limit_description : doc.description.length < 30 ? doc.description : doc.description.substring(0,30)+" ..."
                     });
                 });
             });
@@ -187,6 +196,27 @@
     .body {
         height: 600px;
         overflow-y: scroll;
+    }
+
+    .body .item {
+        transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+        background: #fff;
+        border-radius: 10px;
+        display: inline-block;
+        height: 110px;
+        position: relative;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        margin: 15px 15px 25px 15px;
+        padding: 12px;
+        cursor: pointer;
+    }
+
+    .body .item:hover {
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    }
+
+    .body .item:active {
+        /*height: 105px;*/
     }
 
     .place_holder_color::placeholder {
