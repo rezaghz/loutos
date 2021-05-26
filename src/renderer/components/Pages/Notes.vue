@@ -6,13 +6,15 @@
                     <span class="d-block h5 pr-2 pt-2">لیست یادداشت ها</span>
                 </div>
                 <div class="body pt-2">
-                    <div class="item d-flex flex-column pb-1 justify-content-around" v-for="note in notes"
+                    <div class="item d-flex flex-column justify-content-between pb-1 " @click="show(note.id)"
+                         v-for="(note,index) in notes"
                          :style="{backgroundColor : note.color}">
                         <div class="title">
                             <span>{{note.title}}</span>
                         </div>
-                        <div class="description">
-                            <span> {{note.limit_description}}</span>
+                        <div class="tools d-flex flex-row justify-content-between p-1 align-items-center">
+                            <p class="m-0"> {{note.description}}</p>
+                            <span @click.prevent="destroy(note.id,index)"><i class="fa fa-trash"></i></span>
                         </div>
                     </div>
                 </div>
@@ -39,7 +41,7 @@
                             </div>
                         </transition-group>
                     </div>
-                    <span><i class="fa fa-image"></i></span>
+                    <!--                    <span><i class="fa fa-image"></i></span>-->
                 </div>
             </div>
         </div>
@@ -130,10 +132,10 @@
                 doc.rows.forEach(val => {
                     let doc = val.doc;
                     self.notes.push({
+                        id: doc._id,
                         title: doc.title,
-                        description: doc.description,
                         color: doc.color,
-                        limit_description : doc.description.length < 30 ? doc.description : doc.description.substring(0,30)+" ..."
+                        description: doc.description.length < 30 ? doc.description : doc.description.substring(0, 30) + " ..."
                     });
                 });
             });
@@ -148,14 +150,52 @@
                 }).then(function (response) {
                     self.notes.unshift({
                         title: self.title,
-                        description: self.description,
                         color: self.background_color_new_body,
+                        description: self.description.length < 30 ? self.description : self.description.substring(0, 30) + " ..."
                     });
                     self.title = "";
                     self.description = "";
                 }, self).catch(function (err) {
                     console.log(err);
                 });
+            },
+            show(id) {
+                let self = this;
+                db.get(id).then(function (doc) {
+                    self.title = doc.title;
+                    self.description = doc.description;
+                    self.background_color_new_body = doc.color;
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            },
+            destroy(id, index) {
+                let self = this;
+                swal({
+                    title: "مطمئنی ؟",
+                    text: "یادداشتت رو میخوای پاکش کنی ؟",
+                    icon: "warning",
+                    buttons: ["نه !", " آره !"],
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            db.get(id).then(function (doc) {
+                                return db.remove(doc);
+                            }).then(function (result) {
+                                swal("یادداشت با موفقیت پاک شد", {
+                                    icon: "success",
+                                });
+                                self.notes.splice(index, 1);
+                                self.title = "";
+                                self.description = "";
+                                self.background_color_new_body = "white";
+                                self.text_color_new_body = "black";
+                            }).catch(function (err) {
+                                console.log(err);
+                            });
+                        }
+                    });
             },
             selectColor(index) {
                 for (var i in this.color_list) {
@@ -216,8 +256,9 @@
     }
 
     .body .item:active {
-        /*height: 105px;*/
+        height: 107px;
     }
+
 
     .place_holder_color::placeholder {
         color: #ffffff !important;
