@@ -148,7 +148,9 @@
                     description: this.description,
                     color: this.background_color_new_body,
                 }).then(function (response) {
+                    console.log(response);
                     self.notes.unshift({
+                        id : response.id,
                         title: self.title,
                         color: self.background_color_new_body,
                         description: self.description.length < 30 ? self.description : self.description.substring(0, 30) + " ..."
@@ -185,6 +187,7 @@
                             }).then(function (result) {
                                 swal("یادداشت با موفقیت پاک شد", {
                                     icon: "success",
+                                    button  :"باشه"
                                 });
                                 self.notes.splice(index, 1);
                                 self.title = "";
