@@ -6,9 +6,9 @@
                     <span class="d-block h5 pr-2 pt-2">لیست یادداشت ها</span>
                 </div>
                 <div class="body pt-2">
-                    <div class="item d-flex flex-column justify-content-between pb-1 " @click="show(note.id)"
+                    <div class="item d-flex flex-column justify-content-between pb-1 "
                          v-for="(note,index) in notes"
-                         :style="{backgroundColor : note.color}">
+                         :style="{backgroundColor : note.color}" @click="show(note.id,index)">
                         <div class="title">
                             <span>{{note.title}}</span>
                         </div>
@@ -30,7 +30,11 @@
                               id="body_textarea" dir="rtl"
                               placeholder="متن یادداشت ..."></textarea>
                 </div>
-                <span id="add_note" @click="add()"><i class="fa fa-plus"></i></span>
+
+                <span v-if="mode === 'add'" class="btn_circle_process" @click="add()"><i class="fa fa-plus"></i></span>
+                <span v-else @click="update()" class="btn_circle_process"><i class="fa fa-check"></i></span>
+                <span v-if="mode !== 'add'" @click="refresh()" class="btn_circle_process" id="new_note"><i
+                        class="fa fa-plus-circle"></i></span>
                 <div class="tools d-flex flex-row align-items-baseline position-absolute">
                     <div class="set_color_body d-flex flex-column-reverse">
                         <span @click="show_color_list = !show_color_list"><i class="fa fa-paint-brush"></i></span>
@@ -54,7 +58,6 @@
 
     var PouchDB = require('pouchdb').default;
     var db = new PouchDB('notes');
-
     export default {
         name: "notes",
         components: {
@@ -62,12 +65,15 @@
         },
         data() {
             return {
+                mode: "add",
                 title: "",
                 description: "",
                 show_color_list: false,
                 background_color_new_body: "white",
                 text_color_new_body: "black",
                 is_white_place_holder: false,
+                current_index: null,
+                current_id: null,
                 color_list: [
                     {
                         color: "#f7d794",
@@ -141,32 +147,67 @@
             });
         },
         methods: {
+            refresh() {
+                let self = this;
+                self.mode = 'add';
+                self.title = "";
+                self.description = ""
+                self.background_color_new_body = "white";
+                self.is_white_place_holder = false;
+            },
             add() {
                 let self = this;
-                db.post({
-                    title: this.title,
-                    description: this.description,
-                    color: this.background_color_new_body,
-                }).then(function (response) {
-                    console.log(response);
-                    self.notes.unshift({
-                        id : response.id,
-                        title: self.title,
-                        color: self.background_color_new_body,
-                        description: self.description.length < 30 ? self.description : self.description.substring(0, 30) + " ..."
+                if (this.title.length > 0 || this.description.length > 0) {
+                    db.post({
+                        title: this.title,
+                        description: this.description,
+                        color: this.background_color_new_body,
+                    }).then(function (response) {
+                        console.log(response);
+                        self.notes.unshift({
+                            id: response.id,
+                            title: self.title,
+                            color: self.background_color_new_body,
+                            description: self.description.length < 30 ? self.description : self.description.substring(0, 30) + " ..."
+                        });
+                        self.title = "";
+                        self.description = "";
+                    }, self).catch(function (err) {
+                        console.log(err);
                     });
-                    self.title = "";
-                    self.description = "";
-                }, self).catch(function (err) {
-                    console.log(err);
-                });
+                }
             },
-            show(id) {
+            show(id, index) {
                 let self = this;
+                self.mode = "edit";
+                self.current_id = id;
+                self.current_index = index;
                 db.get(id).then(function (doc) {
                     self.title = doc.title;
                     self.description = doc.description;
                     self.background_color_new_body = doc.color;
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            },
+            update() {
+                let self = this;
+                db.get(self.current_id).then(function (doc) {
+                    return db.put({
+                        _id: self.current_id,
+                        _rev: doc._rev,
+                        title: self.title,
+                        description: self.description,
+                        color: self.background_color_new_body,
+                    });
+                }, self).then(function (response) {
+                    self.notes[self.current_index].title = self.title;
+                    self.notes[self.current_index].description = self.description;
+                    self.notes[self.current_index].color = self.background_color_new_body;
+                    swal("یادداشت با موفقیت ویرایش شد", {
+                        icon: "success",
+                        button: "باشه",
+                    });
                 }).catch(function (err) {
                     console.log(err);
                 });
@@ -187,8 +228,9 @@
                             }).then(function (result) {
                                 swal("یادداشت با موفقیت پاک شد", {
                                     icon: "success",
-                                    button  :"باشه"
+                                    button: "باشه"
                                 });
+                                self.mode = 'add';
                                 self.notes.splice(index, 1);
                                 self.title = "";
                                 self.description = "";
@@ -304,7 +346,7 @@
         color: #000000;
     }
 
-    #add_note {
+    .btn_circle_process {
         height: 50px;
         width: 50px;
         background-color: #ff4552;
@@ -317,11 +359,15 @@
         cursor: pointer;
     }
 
-    #add_note i {
+    .btn_circle_process i {
         margin: auto;
         color: white;
     }
 
+    #new_note {
+        left: 80px;
+        background-color: #ff9645;
+    }
 
     .tools {
         right: 20px;

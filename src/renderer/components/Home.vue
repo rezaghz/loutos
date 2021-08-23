@@ -330,7 +330,7 @@
                 return new persianDate([year, month, day]).toCalendar('gregorian').toLocale('en').format(format);
             },
             shamsi_to_qamari(year, month, day, format = "iMMMM") {
-                let miladi_date = new persianDate([year, month, day]).toCalendar('gregorian').toLocale('en');
+                let miladi_date = new persianDate([year, month, day]).subtract('d', 3).toCalendar('gregorian').toLocale('en');
                 let my = miladi_date.format("YYYY/MM/DD");
                 return moment(my).format(format);
             },
