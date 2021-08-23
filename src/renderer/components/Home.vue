@@ -784,13 +784,13 @@
     .go_today {
         display: block;
         position: absolute;
-        bottom: 20px;
-        right: 10px;
+        bottom: 70px;
+        right: 15px;
     }
 
     .go_today button {
         text-align: center;
-        background-color: #ff4552;
+        background-color: #ff9645;
         display: block;
         color: white;
     }
