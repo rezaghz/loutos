@@ -21,12 +21,12 @@
             </div>
             <div class="new" :style="{backgroundColor : background_color_new_body}">
                 <div id="input_new_title">
-                    <input type="text" class="form-control" :class="{place_holder_color:is_white_place_holder}"
-                           :style="{color:text_color_new_body}" v-model="title" placeholder="عنوان ..." dir="rtl">
+                    <input type="text" class="form-control"
+                           v-model="title" placeholder="عنوان ..." dir="rtl">
                 </div>
                 <div id="input_new_body">
-                    <textarea class="form-control" rows="20" :class="{place_holder_color:is_white_place_holder}"
-                              :style="{color:text_color_new_body}" v-model="description"
+                    <textarea class="form-control" rows="20"
+                              v-model="description"
                               id="body_textarea" dir="rtl"
                               placeholder="متن یادداشت ..."></textarea>
                 </div>
@@ -70,48 +70,32 @@
                 description: "",
                 show_color_list: false,
                 background_color_new_body: "white",
-                text_color_new_body: "black",
-                is_white_place_holder: false,
                 current_index: null,
                 current_id: null,
                 color_list: [
                     {
                         color: "#f7d794",
                         selected: false,
-                        text_color: 'black',
-                        is_white_place_holder: false,
                     },
                     {
                         color: "#778beb",
                         selected: false,
-                        text_color: 'white',
-                        is_white_place_holder: true,
                     },
                     {
                         color: "#ea8685",
                         selected: false,
-                        text_color: 'white',
-                        is_white_place_holder: true,
                     },
                     {
                         color: "#f3a683",
                         selected: false,
-                        text_color: 'white',
-                        is_white_place_holder: true,
-
                     },
                     {
                         color: "#3dc1d3",
                         selected: false,
-                        text_color: 'white',
-                        is_white_place_holder: true,
-
                     },
                     {
                         color: "white",
                         selected: true,
-                        text_color: 'black',
-                        is_white_place_holder: false,
                     },
                 ],
                 notes: [],
@@ -153,7 +137,6 @@
                 self.title = "";
                 self.description = ""
                 self.background_color_new_body = "white";
-                self.is_white_place_holder = false;
             },
             add() {
                 let self = this;
@@ -235,7 +218,6 @@
                                 self.title = "";
                                 self.description = "";
                                 self.background_color_new_body = "white";
-                                self.text_color_new_body = "black";
                             }).catch(function (err) {
                                 console.log(err);
                             });
@@ -248,8 +230,6 @@
                 }
                 this.color_list[index].selected = true;
                 this.background_color_new_body = this.color_list[index].color;
-                this.text_color_new_body = this.color_list[index].text_color;
-                this.is_white_place_holder = this.color_list[index].is_white_place_holder;
             }
         }
     }
