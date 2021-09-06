@@ -7,7 +7,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'خانه',
+      name: 'home',
       component: require('@/components/Home').default
     },
     {
@@ -19,6 +19,11 @@ export default new Router({
       path: '/notes',
       name: 'notes',
       component: require('@/components/Pages/Notes').default
+    },
+    {
+      path: '/convert-dates',
+      name: 'convert-dates',
+      component: require('@/components/Pages/ConvertDates').default
     },
     {
       path: '*',
