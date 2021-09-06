@@ -6,7 +6,7 @@
 
 <script>
   export default {
-    name: 'persian_Calendar'
+    name: 'persian_assistant'
   }
 </script>
 

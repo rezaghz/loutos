@@ -1,6 +1,8 @@
-# Persian Calendar
+# Introduction
 
-> Desktop Persian Calendar for Windows , Mac , Linux
+<p align="center">
+    <img src="/src/renderer/assets/images/socialcard.jpg" alt="persian assistant social card">
+</p>
   
 
 #### Build Setup

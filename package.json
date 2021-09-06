@@ -1,9 +1,9 @@
 {
-  "name": "Calendar",
+  "name": "persian-assistant",
   "version": "0.0.1",
   "author": "Reza Ghasemzadeh <rezaghasemzadeh1@gmail.com>",
-  "description": "Persian Calendar",
-  "license": null,
+  "description": "persian assistant for all os",
+  "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
@@ -17,8 +17,8 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "persian Calendar",
-    "appId": "com.rezaghz.persian.Calendar",
+    "productName": "persian assistant",
+    "appId": "com.rezaghz.persian.assistant",
     "directories": {
       "output": "build"
     },
