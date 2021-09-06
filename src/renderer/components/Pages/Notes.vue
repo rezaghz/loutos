@@ -125,7 +125,8 @@
                         id: doc._id,
                         title: doc.title,
                         color: doc.color,
-                        description: doc.description.length < 30 ? doc.description : doc.description.substring(0, 30) + " ..."
+                        description: doc.description.length < 30 ? doc.description : doc.description.substring(0, 30) + " ...",
+                        short_description : doc.description.length < 30 ? doc.description : doc.description.substring(0, 30) + " ..."
                     });
                 });
             });
