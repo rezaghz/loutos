@@ -9,11 +9,11 @@
                     </div>
                     <div class=" month-now ">
                         <div class="clearfix"></div>
-                        <span>{{shamsi_title}}</span>
+                        <span>{{jalali_title}}</span>
                         <div class="clearfix"></div>
-                        <span class="d-block mt-2 miladi_in_table ">{{miladi_title}}</span>
+                        <span class="d-block mt-2 gregorian_in_table ">{{gregorian_title}}</span>
                         <div class="clearfix"></div>
-                        <span class="d-block mt-2 qamari_in_table">{{qamari_title}}</span>
+                        <span class="d-block mt-2 hijri_in_table">{{hijri_title}}</span>
                         <div class="clearfix"></div>
                     </div>
                     <div class="month-last" @click="nextMonth()">
@@ -33,16 +33,16 @@
                 </div>
 
                 <div class="days-body">
-                    <div class="day-cell" @click="getDateDetail(value.year,value.month,value.shamsi_day)"
+                    <div class="day-cell" @click="getDateDetail(value.year,value.month,value.jalali_day)"
                          v-for="value in dayOfCalendar">
                         <div class="day-cell-inner">
                             <div class="day-cell-item">
                                 <div class="day-cell-item-inner" :class="[{day_selected : value.disableSelected}]">
                                     <span :class="{disableStyle : value.disableStyle,vacationStyle : value.vacationStyle}">
-{{value.shamsi_day}}</span>
+{{value.jalali_day}}</span>
                                 </div>
-                                <div class="miladi small" style="float:right">{{value.miladi_day}}</div>
-                                <div class="qamari small" style="float:left">{{value.qamari_day}}</div>
+                                <div class="gregorian small" style="float:right">{{value.gregorian_day}}</div>
+                                <div class="hijri small" style="float:left">{{value.hijri_day}}</div>
                                 <div class="clearfix"></div>
                             </div>
                         </div>
@@ -54,58 +54,59 @@
             <div class="dd-calendar">
                 <div class="d-flex align-items-center justify-content-between dd-calendar-in mt-2">
                     <div class="calendar-in">
-                        <span class="calendar-in-span">{{shamsi_header_date}}</span>
+                        <span class="calendar-in-span">{{jalali_header_date}}</span>
                         <div class="clearfix"></div>
-                        <span class="calendar-in-span small_header d-block mt-3">{{shamsi_header_numeral}}</span>
+                        <span class="calendar-in-span small_header d-block mt-3">{{jalali_header_numeral}}</span>
                     </div>
                     <div class="Calendar-in">
-                        <span dir="ltr" class="calendar-in-span d-inline-block miladi ">{{miladi_header_date}}</span>
+                        <span dir="ltr"
+                              class="calendar-in-span d-inline-block gregorian ">{{gregorian_header_date}}</span>
                         <div class="clearfix"></div>
-                        <span class="calendar-in-span small_header d-block mt-3 miladi">{{miladi_header_numeral}}</span>
+                        <span class="calendar-in-span small_header d-block mt-3 gregorian">{{gregorian_header_numeral}}</span>
                     </div>
                     <div class="calendar-in">
-                        <span class="calendar-in-span">{{qamari_header_date}}</span>
+                        <span class="calendar-in-span">{{hijri_header_date}}</span>
                         <div class="clearfix"></div>
-                        <span class="calendar-in-span small_header d-block mt-3">{{qamari_header_numeral}}</span>
+                        <span class="calendar-in-span small_header d-block mt-3">{{hijri_header_numeral}}</span>
                     </div>
                 </div>
                 <ul class="list-class-date">
-               <!--     <li>
-                        <a href="#" target="_blank" class="d-flex justify-content-between align-items-center">
-                            <h2 class="IRANSans-Light list-class-date-s1 d-flex align-items-center"><i
-                                    class="fa fa-video-camera"></i> لورم ایپسوم متن ساختگی </h2>
-                            <div class="list-class-time d-flex align-items-center"><span class="list-class-time-s1">18:00</span>-<span
-                                    class="list-class-time-s2">15:00</span> <i class="fa fa-angle-left"></i></div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" target="_blank" class="d-flex justify-content-between align-items-center">
-                            <h2 class="IRANSans-Light list-class-date-s1 d-flex align-items-center"><i
-                                    class="fa fa-video-camera"></i> لورم ایپسوم متن ساختگی </h2>
-                            <div class="list-class-time d-flex align-items-center"><span class="list-class-time-s1">18:00</span>-<span
-                                    class="list-class-time-s2">15:00</span> <i class="fa fa-angle-left"></i></div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" target="_blank" class="d-flex justify-content-between align-items-center">
-                            <h2 class="IRANSans-Light list-class-date-s1 d-flex align-items-center"><i
-                                    class="fa fa-video-camera"></i> لورم ایپسوم متن ساختگی </h2>
-                            <div class="list-class-time d-flex align-items-center"><span class="list-class-time-s1">18:00</span>-<span
-                                    class="list-class-time-s2">15:00</span> <i class="fa fa-angle-left"></i></div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" target="_blank" class="d-flex justify-content-between align-items-center">
-                            <h2 class="IRANSans-Light list-class-date-s1 d-flex align-items-center"><i
-                                    class="fa fa-video-camera"></i> لورم ایپسوم متن ساختگی </h2>
-                            <div class="list-class-time d-flex align-items-center"><span class="list-class-time-s1">18:00</span>-<span
-                                    class="list-class-time-s2">15:00</span> <i class="fa fa-angle-left"></i></div>
-                        </a>
-                    </li>-->
+                    <!--     <li>
+                             <a href="#" target="_blank" class="d-flex justify-content-between align-items-center">
+                                 <h2 class="IRANSans-Light list-class-date-s1 d-flex align-items-center"><i
+                                         class="fa fa-video-camera"></i> لورم ایپسوم متن ساختگی </h2>
+                                 <div class="list-class-time d-flex align-items-center"><span class="list-class-time-s1">18:00</span>-<span
+                                         class="list-class-time-s2">15:00</span> <i class="fa fa-angle-left"></i></div>
+                             </a>
+                         </li>
+                         <li>
+                             <a href="#" target="_blank" class="d-flex justify-content-between align-items-center">
+                                 <h2 class="IRANSans-Light list-class-date-s1 d-flex align-items-center"><i
+                                         class="fa fa-video-camera"></i> لورم ایپسوم متن ساختگی </h2>
+                                 <div class="list-class-time d-flex align-items-center"><span class="list-class-time-s1">18:00</span>-<span
+                                         class="list-class-time-s2">15:00</span> <i class="fa fa-angle-left"></i></div>
+                             </a>
+                         </li>
+                         <li>
+                             <a href="#" target="_blank" class="d-flex justify-content-between align-items-center">
+                                 <h2 class="IRANSans-Light list-class-date-s1 d-flex align-items-center"><i
+                                         class="fa fa-video-camera"></i> لورم ایپسوم متن ساختگی </h2>
+                                 <div class="list-class-time d-flex align-items-center"><span class="list-class-time-s1">18:00</span>-<span
+                                         class="list-class-time-s2">15:00</span> <i class="fa fa-angle-left"></i></div>
+                             </a>
+                         </li>
+                         <li>
+                             <a href="#" target="_blank" class="d-flex justify-content-between align-items-center">
+                                 <h2 class="IRANSans-Light list-class-date-s1 d-flex align-items-center"><i
+                                         class="fa fa-video-camera"></i> لورم ایپسوم متن ساختگی </h2>
+                                 <div class="list-class-time d-flex align-items-center"><span class="list-class-time-s1">18:00</span>-<span
+                                         class="list-class-time-s2">15:00</span> <i class="fa fa-angle-left"></i></div>
+                             </a>
+                         </li>-->
                 </ul>
                 <div class="calendar-btn d-flex justify-content-center align-items-center">
-                        <i class="fa fa-plus"></i> ثبت یادآور
-                    </div>
+                    <i class="fa fa-plus"></i> ثبت یادآور
+                </div>
                 <!--<a href="#" class="new-class d-flex align-items-center justify-content-center transition-5">
                     <i class="fa fa-video-camera"></i> شرکت در کلاس جدید
                 </a>-->
@@ -126,9 +127,9 @@
         components: {Sidebar},
         data() {
             return {
-                shamsi_title: "",
-                miladi_title: "",
-                qamari_title: "",
+                jalali_title: "",
+                gregorian_title: "",
+                hijri_title: "",
                 month: "",
                 year: "",
                 day: "",
@@ -136,12 +137,12 @@
                 disableSelected: false,
                 showGoTodayBtn: false,
                 CalendarCourse: [],
-                shamsi_header_date: "",
-                miladi_header_date: "",
-                qamari_header_date: "",
-                shamsi_header_numeral: "",
-                miladi_header_numeral: "",
-                qamari_header_numeral: "",
+                jalali_header_date: "",
+                gregorian_header_date: "",
+                hijri_header_date: "",
+                jalali_header_numeral: "",
+                gregorian_header_numeral: "",
+                hijri_header_numeral: "",
             }
         },
         mounted() {
@@ -149,7 +150,7 @@
             this.year = today.year();
             this.month = today.month();
             this.day = today.date();
-            this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
+            this.jalali_title = today.toLocale('fa').format('MMMM') + " " + this.year;
             this.createMiladiTitle(today.year(), today.month());
             this.createQamariTitle(today.year(), today.month())
             this.createHeaderDate(today.year(), today.month(), today.date());
@@ -166,9 +167,9 @@
                 if (beforeMonthDate.length > 0) {
                     beforeMonthDate.forEach(function (time) {
                         self.dayOfCalendar.push({
-                            shamsi_day: time.day,
-                            miladi_day: this.shamsi_to_miladi(time.year, time.month, time.day, "DD"),
-                            qamari_day: this.shamsi_to_qamari(time.year, time.month, time.day, "iDD"),
+                            jalali_day: time.day,
+                            gregorian_day: this.jalali_to_gregorian(time.year, time.month, time.day, "DD"),
+                            hijri_day: this.jalali_to_hijri(time.year, time.month, time.day, "iDD"),
                             month: time.month,
                             year: time.year,
                             date: time.date,
@@ -184,9 +185,9 @@
                     let createDay = new persianDate([year, month, counter]);
                     let showSelected = today.date() === createDay.date() && today.year() === createDay.year() && today.month() === createDay.month();
                     self.dayOfCalendar.push({
-                        shamsi_day: createDay.date(),
-                        miladi_day: this.shamsi_to_miladi(createDay.year(), createDay.month(), createDay.date(), "DD"),
-                        qamari_day: this.shamsi_to_qamari(createDay.year(), createDay.month(), createDay.date(), "iDD"),
+                        jalali_day: createDay.date(),
+                        gregorian_day: this.jalali_to_gregorian(createDay.year(), createDay.month(), createDay.date(), "DD"),
+                        hijri_day: this.jalali_to_hijri(createDay.year(), createDay.month(), createDay.date(), "iDD"),
                         year: createDay.year(),
                         month: createDay.month(),
                         date: createDay.format("L"),
@@ -200,9 +201,9 @@
                 if (afterMonthDate.length > 0) {
                     afterMonthDate.forEach(function (time) {
                         self.dayOfCalendar.push({
-                            shamsi_day: time.day,
-                            miladi_day: this.shamsi_to_miladi(time.year, time.month, time.day, "DD"),
-                            qamari_day: this.shamsi_to_qamari(time.year, time.month, time.day, "iDD"),
+                            jalali_day: time.day,
+                            gregorian_day: this.jalali_to_gregorian(time.year, time.month, time.day, "DD"),
+                            hijri_day: this.jalali_to_hijri(time.year, time.month, time.day, "iDD"),
                             month: time.month,
                             year: time.year,
                             date: time.date,
@@ -215,23 +216,23 @@
             },
             createHeaderDate(persian_year, persian_month, persian_day) {
                 let date = new persianDate([persian_year, persian_month, persian_day]);
-                this.shamsi_header_date = date.format("D") + " " + date.toLocale('fa').format('MMMM') + " " + date.year();
-                this.miladi_header_date = this.shamsi_to_miladi(persian_year, persian_month, persian_day);
-                this.qamari_header_date = this.shamsi_to_qamari(persian_year, persian_month, persian_day, "iD iMMMM iYYYY");
-                this.shamsi_header_numeral = date.year() + "/" + date.toLocale('fa').format('MM') + "/" + date.format("D");
-                this.miladi_header_numeral = this.shamsi_to_miladi(persian_year, persian_month, persian_day, "L");
-                this.qamari_header_numeral = this.shamsi_to_qamari(persian_year, persian_month, persian_day, "iYYYY/iMM/iD");
+                this.jalali_header_date = date.format("D") + " " + date.toLocale('fa').format('MMMM') + " " + date.year();
+                this.gregorian_header_date = this.jalali_to_gregorian(persian_year, persian_month, persian_day);
+                this.hijri_header_date = this.jalali_to_hijri(persian_year, persian_month, persian_day, "iD iMMMM iYYYY");
+                this.jalali_header_numeral = date.year() + "/" + date.toLocale('fa').format('MM') + "/" + date.format("D");
+                this.gregorian_header_numeral = this.jalali_to_gregorian(persian_year, persian_month, persian_day, "L");
+                this.hijri_header_numeral = this.jalali_to_hijri(persian_year, persian_month, persian_day, "iYYYY/iMM/iD");
             },
             createQamariTitle(year, month) {
                 let processYear = "";
-                let currentMonth = this.shamsi_to_qamari(year, month,1,"iMMMM");
-                let currentYear = this.shamsi_to_qamari(year, month,1,"iYYYY");
-                let endMonth = this.shamsi_to_qamari(year, month,30,"iMMMM");
-                let endYear = this.shamsi_to_qamari(year, month,30,"iYYYY");
-                if (currentYear !== endYear){
+                let currentMonth = this.jalali_to_hijri(year, month, 1, "iMMMM");
+                let currentYear = this.jalali_to_hijri(year, month, 1, "iYYYY");
+                let endMonth = this.jalali_to_hijri(year, month, 30, "iMMMM");
+                let endYear = this.jalali_to_hijri(year, month, 30, "iYYYY");
+                if (currentYear !== endYear) {
                     processYear = " " + currentYear;
                 }
-                this.qamari_title = currentMonth + processYear + " - " + endMonth + " " + endYear;
+                this.hijri_title = currentMonth + processYear + " - " + endMonth + " " + endYear;
             },
             createMiladiTitle(year, month) {
                 let processYear = "";
@@ -242,7 +243,7 @@
                 if (before_year !== current_year) {
                     processYear = " " + before_year;
                 }
-                this.miladi_title = before_month + processYear + " - " + current_month + " " + current_year;
+                this.gregorian_title = before_month + processYear + " - " + current_month + " " + current_year;
             },
             goToday() {
                 this.showGoTodayBtn = false;
@@ -250,7 +251,7 @@
                 this.year = today.year();
                 this.month = today.month();
                 this.day = today.date();
-                this.shamsi_title = today.toLocale('fa').format('MMMM') + " " + this.year;
+                this.jalali_title = today.toLocale('fa').format('MMMM') + " " + this.year;
                 this.createMiladiTitle(today.year(), today.month());
                 this.createQamariTitle(today.year(), today.month());
                 this.createHeaderDate(today.year(), today.month(), today.date());
@@ -321,18 +322,18 @@
                 this.month = month;
                 this.year = year;
                 let set = new persianDate([this.year, this.month]);
-                this.shamsi_title = set.toLocale('fa').format('MMMM') + " " + set.year();
+                this.jalali_title = set.toLocale('fa').format('MMMM') + " " + set.year();
             },
             getDateDetail(year, month, day) {
                 this.createHeaderDate(year, month, day);
             },
-            shamsi_to_miladi(year, month, day, format = "LL") {
+            jalali_to_gregorian(year, month, day, format = "LL") {
                 return new persianDate([year, month, day]).toCalendar('gregorian').toLocale('en').format(format);
             },
-            shamsi_to_qamari(year, month, day, format = "iMMMM") {
-                let miladi_date = new persianDate([year, month, day]).subtract('d', 3).toCalendar('gregorian').toLocale('en');
-                let my = miladi_date.format("YYYY/MM/DD");
-                return moment(my).format(format);
+            jalali_to_hijri(year, month, day, format = "iMMMM") {
+                let gregorian_date = new persianDate([year, month, day]).subtract('d', 3).toCalendar('gregorian').toLocale('en');
+                let my = gregorian_date.format("YYYY/MM/DD");
+                return moment(new Date(my)).format(format);
             },
         }
     }
@@ -579,7 +580,8 @@
         bottom: 10px;
         left: 10px;
     }
-    .calendar-btn i{
+
+    .calendar-btn i {
         padding: 0 5px;
     }
 
@@ -745,16 +747,16 @@
         margin-top: 20px;
     }
 
-    .qamari.small {
+    .hijri.small {
         font-family: iransans_light;
         font-size: 13px;
     }
 
-    .miladi {
+    .gregorian {
         font-family: Tahoma, serif;
     }
 
-    .miladi.small {
+    .gregorian.small {
         font-size: 11px;
     }
 
@@ -764,8 +766,8 @@
         font-weight: bold;
     }
 
-    .miladi_in_table {
-        font-family: SansSerif,Arial !important;
+    .gregorian_in_table {
+        font-family: SansSerif, Arial !important;
         font-size: 15px !important;
         color: #222 !important;
         letter-spacing: 0 !important;
@@ -773,7 +775,7 @@
         white-space: nowrap;
     }
 
-    .qamari_in_table {
+    .hijri_in_table {
         font-size: 14px !important;
         letter-spacing: 0 !important;
         color: #949494 !important;
@@ -804,10 +806,13 @@
             font-size: 13px;
         }
 
-        .miladi_in_table {
+        .gregorian_in_table {
             font-size: 15px !important;
         }
-        .qamari_in_table { font-size: 12px !important;}
+
+        .hijri_in_table {
+            font-size: 12px !important;
+        }
     }
 
     /* dashboard */
