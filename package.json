@@ -1,6 +1,6 @@
 {
-  "name": "persian-assistant",
-  "version": "0.0.1",
+  "name": "loutos",
+  "version": "1.0.0",
   "author": "Reza Ghasemzadeh <rezaghasemzadeh1@gmail.com>",
   "description": "persian assistant for all os",
   "license": "MIT",
@@ -17,8 +17,8 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "persian assistant",
-    "appId": "com.rezaghz.persian.assistant",
+    "productName": "loutos",
+    "appId": "com.rezaghz.loutos",
     "directories": {
       "output": "build"
     },
