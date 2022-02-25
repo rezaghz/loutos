@@ -17,7 +17,7 @@
                     <div class="item"><i class="fa fa-exchange"></i> تبدیل تاریخ</div>
                 </router-link>
                 <div class="item"><i class="fa fa-cog"></i> تنظیمات</div>
-                <div class="item"><i class="fa fa-question-circle"></i> راهنما</div>
+<!--                <div class="item"><i class="fa fa-question-circle"></i> راهنما</div>-->
             </div>
         </div>
     </div>
