@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from 'electron'
+const path = require('path');
 
 /**
  * Set `__static` path to static files in production
@@ -24,6 +25,7 @@ function createWindow () {
     width: 1000,
     minWidth :1000,
     minHeight :563,
+    icon: path.join(__dirname, "../../build/icons", "icon.ico"),
     //maxWidth : 1200,
   })
 
