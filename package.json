@@ -1,5 +1,5 @@
 {
-  "name": "Loutos",
+  "name": "loutos",
   "version": "1.0.0",
   "author": "Reza Ghasemzadeh <rezaghasemzadeh1@gmail.com>",
   "description": "persian assistant for all os",
@@ -17,7 +17,7 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "loutos",
+    "productName": "Loutos",
     "appId": "com.rezaghz.loutos",
     "directories": {
       "output": "build"
@@ -79,7 +79,7 @@
     "babel-register": "^6.26.0",
     "cfonts": "^2.1.2",
     "chalk": "^2.4.1",
-    "copy-webpack-plugin": "^4.5.1",
+    "copy-webpack-plugin": "^10.2.4",
     "cross-env": "^5.1.6",
     "css-loader": "^0.28.11",
     "del": "^3.0.0",
