@@ -24,7 +24,7 @@
 
 
 
-## نحوه نصب 
+## نحوه Build 
 
 ``` bash
 # install dependencies
