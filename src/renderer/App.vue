@@ -6,7 +6,7 @@
 
 <script>
   export default {
-    name: 'persian_assistant'
+    name: 'loutos'
   }
 </script>
 
