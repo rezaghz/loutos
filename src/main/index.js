@@ -36,16 +36,33 @@ function createWindow() {
 
     mainWindow.on("close", (e) => {
         e.preventDefault();
-        mainWindow.hide();
+        mainWindow.webContents
+            .executeJavaScript('localStorage.getItem("settings.active_close_button");', true)
+            .then(result => {
+                console.log(result);
+                if (result == 'true') {
+                    app.exit(0);
+                } else {
+                    mainWindow.hide();
+                }
+            });
     });
 
     mainWindow.on("minimize", (e) => {
-        mainWindow.hide();
+        mainWindow.webContents
+            .executeJavaScript('localStorage.getItem("settings.tray_after_minimize");', true)
+            .then(result => {
+                if (result == 'true') {
+                    mainWindow.hide();
+                } else {
+                    mainWindow.minimize();
+                }
+            });
     });
 
     mainWindow.on('closed', () => {
         mainWindow = null
-    })
+    });
     trayInit();
 }
 

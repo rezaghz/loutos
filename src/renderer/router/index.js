@@ -26,9 +26,9 @@ export default new Router({
             component: require('@/components/Pages/ConvertDates').default
         },
         {
-            path: '/setting',
-            name: 'setting',
-            component: require('@/components/Pages/Setting').default
+            path: '/settings',
+            name: 'settings',
+            component: require('@/components/Pages/Settings').default
         },
         {
             path: '/about',

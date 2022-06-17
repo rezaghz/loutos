@@ -16,7 +16,7 @@
         <router-link to="/convert-dates">
           <div class="item"><i class="fa fa-exchange"></i> تبدیل تاریخ</div>
         </router-link>
-        <router-link to="/setting">
+        <router-link to="/settings">
           <div class="item"><i class="fa fa-cog"></i> تنظیمات</div>
         </router-link>
         <router-link to="/about">
