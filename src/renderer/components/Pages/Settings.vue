@@ -38,6 +38,8 @@
 <script>
 import Sidebar from '../Partials/Sidebar';
 
+const AutoLaunch = require('auto-launch');
+
 export default {
   name: "settings",
   components: {
@@ -47,7 +49,7 @@ export default {
     return {
       active_close_button: false,
       tray_after_minimize: true,
-      run_startup: false,
+      run_startup: true,
     }
   },
   mounted() {
@@ -64,6 +66,16 @@ export default {
   methods: {
     changeSetting(variable) {
       localStorage.setItem('settings.' + variable, this.$data[variable].toString());
+      if (variable == 'run_startup') {
+        let autoLauncher = new AutoLaunch({
+          name: "Loutos"
+        });
+        if (this.$data[variable]) {
+          autoLauncher.enable();
+        } else {
+          autoLauncher.disable();
+        }
+      }
     }
   },
 

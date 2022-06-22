@@ -2,6 +2,7 @@ import {app, Tray, Menu, BrowserWindow, shell} from 'electron';
 
 const persianDate = require('persian-date');
 const path = require('path');
+const AutoLaunch = require('auto-launch');
 
 /**
  * Set `__static` path to static files in production
@@ -39,7 +40,6 @@ function createWindow() {
         mainWindow.webContents
             .executeJavaScript('localStorage.getItem("settings.active_close_button");', true)
             .then(result => {
-                console.log(result);
                 if (result == 'true') {
                     app.exit(0);
                 } else {
@@ -64,6 +64,7 @@ function createWindow() {
         mainWindow = null
     });
     trayInit();
+    setAutoLunch();
 }
 
 app.on('ready', createWindow)
@@ -76,10 +77,9 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
     if (mainWindow === null) {
-        createWindow()
+        createWindow();
     }
 })
-
 /**
  * Auto Updater
  *
@@ -126,4 +126,19 @@ function trayInit() {
     tray.on('double-click', () => {
         mainWindow.show();
     });
+}
+
+function setAutoLunch() {
+    mainWindow.webContents
+        .executeJavaScript('localStorage.getItem("settings.run_startup");', true)
+        .then(result => {
+            let autoLauncher = new AutoLaunch({
+                name: "Loutos"
+            });
+            if (result == null || result == 'true') {
+                autoLauncher.enable();
+            } else {
+                autoLauncher.disable();
+            }
+        });
 }
