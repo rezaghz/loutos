@@ -82,9 +82,9 @@
             </a>
           </li>
         </ul>
-        <div class="calendar-btn d-flex justify-content-center align-items-center">
-          <i class="fa fa-plus"></i> ثبت یادآور
-        </div>
+        <!--        <div class="calendar-btn d-flex justify-content-center align-items-center">
+                  <i class="fa fa-plus"></i> ثبت یادآور
+                </div>-->
         <!--<a href="#" class="new-class d-flex align-items-center justify-content-center transition-5">
             <i class="fa fa-video-camera"></i> شرکت در کلاس جدید
         </a>-->
