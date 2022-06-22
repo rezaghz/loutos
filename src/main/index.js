@@ -117,7 +117,7 @@ function trayInit() {
             }
         },
     ]);
-    tray = new Tray(path.join(__dirname, "../../build/icons", "icon.ico"));
+    tray = new Tray(path.join(__static, "icons", "icon.ico"));
     tray.setToolTip("امروز : " + persian_date.format("LLLL"));
     tray.setContextMenu(contextMenu);
     tray.on('click', () => {

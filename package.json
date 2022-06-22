@@ -79,7 +79,7 @@
     "babel-register": "^6.26.0",
     "cfonts": "^2.1.2",
     "chalk": "^2.4.1",
-    "copy-webpack-plugin": "^10.2.4",
+    "copy-webpack-plugin": "^4.5.1",
     "cross-env": "^5.1.6",
     "css-loader": "^0.28.11",
     "del": "^3.0.0",
