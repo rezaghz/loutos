@@ -1,4 +1,4 @@
-import {app, Tray, Menu, BrowserWindow, shell} from 'electron';
+import {app, Tray, Menu, BrowserWindow, shell,nativeImage} from 'electron';
 
 const persianDate = require('persian-date');
 const path = require('path');
@@ -117,7 +117,9 @@ function trayInit() {
             }
         },
     ]);
-    tray = new Tray(path.join(__static, "icons", "icon.ico"));
+    const trayIcon = path.join(__static, "icons", "icon.ico");
+    const nimage = nativeImage.createFromPath(trayIcon);
+    tray = new Tray(nimage);
     tray.setToolTip("امروز : " + persian_date.format("LLLL"));
     tray.setContextMenu(contextMenu);
     tray.on('click', () => {
