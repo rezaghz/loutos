@@ -1,17 +1,17 @@
 @font-face {
-    font-family: iransans;
+    font-family: vazir;
     font-style: normal;
     font-weight: normal;
-    src: url('../fonts/eot/iransans.eot');
-    src: url('../fonts/eot/iransans.eot?#iefix') format('embedded-opentype'), /* IE6-8 */ url('../fonts/woff2/iransans.woff2') format('woff2'), /* FF39+,Chrome36+, Opera24+*/ url('../fonts/woff/iransans.woff') format('woff'), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/ url('../fonts/ttf/iransans.ttf') format('truetype');
+    src: url('../fonts/woff2/vazir-regular.woff2') format('woff2'),
+    url('../fonts/ttf/varzir-regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: iransans_light;
+    font-family: vazir_light;
     font-style: normal;
     font-weight: 300;
-    src: url('../fonts/eot/iransans_light.eot');
-    src: url('../fonts/eot/iransans_light.eot?#iefix') format('embedded-opentype'), /* IE6-8 */ url('../fonts/woff2/iransans_light.woff2') format('woff2'), /* FF39+,Chrome36+, Opera24+*/ url('../fonts/woff/iransans_light.woff') format('woff'), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/ url('../fonts/ttf/iransans_light.ttf') format('truetype');
+    src: url('../fonts/woff2/vazir-light.woff2') format('woff2'),
+    url('../fonts/ttf/vazir-light.ttf') format('truetype');
 }
 
 html {
@@ -23,7 +23,8 @@ body {
 }
 
 * {
-    font-family: iransans, Tahoma, serif;
+    font-family: vazir, Tahoma, serif;
+    font-feature-settings: "ss01";
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -101,12 +102,12 @@ p, h1, h2, h3, h4, h5, h6, strong, div, a {
 
 
 .IRANSans-Light {
-    font-family: iransans_light, Tahoma, serif;
+    font-family: vazir_light, Tahoma, serif;
 }
 
 
 .IRANSans {
-    font-family: iransans, Tahoma, serif;
+    font-family: vazir, Tahoma, serif;
 }
 
 /* dashboard */

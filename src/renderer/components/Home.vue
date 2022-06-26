@@ -778,7 +778,7 @@ export default {
 }
 
 .hijri.small {
-  font-family: iransans_light;
+  font-family: vazir_light;
   font-size: 13px;
 }
 
