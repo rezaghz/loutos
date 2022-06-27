@@ -102,26 +102,56 @@ app.on('ready', () => {
 
 function trayInit() {
     let persian_date = new persianDate();
-    let contextMenu = Menu.buildFromTemplate([
-        {
-            label: "نمایش مخرن",
-            click() {
-                shell.openExternal("https://github.com/rezaghz/loutos");
+    let today = "امروز : " + persian_date.format("LLLL");
+    if (process.platform === "linux"){
+        const trayIcon = path.join(__static, "icons", "icon.png");
+        const nimage = nativeImage.createFromPath(trayIcon);
+        let contextMenu = Menu.buildFromTemplate([
+            {
+                label: today,
+                click() {
+                    mainWindow.show();
+                },
             },
-        },
-        {
-            label: "خروج",
-            click() {
-                app.quit();
-                app.exit();
-            }
-        },
-    ]);
-    const trayIcon = path.join(__static, "icons", "icon.ico");
-    const nimage = nativeImage.createFromPath(trayIcon);
-    tray = new Tray(nimage);
-    tray.setToolTip("امروز : " + persian_date.format("LLLL"));
-    tray.setContextMenu(contextMenu);
+            {
+                label: "نمایش مخرن",
+                click() {
+                    shell.openExternal("https://github.com/rezaghz/loutos");
+                },
+            },
+            {
+                label: "خروج",
+                click() {
+                    app.quit();
+                    app.exit();
+                }
+            },
+        ]);
+        tray = new Tray(nimage);
+        tray.setContextMenu(contextMenu);
+    }
+    else {
+        const trayIcon = path.join(__static, "icons", "icon.ico");
+        const nimage = nativeImage.createFromPath(trayIcon);
+        tray.setToolTip(today);
+        let contextMenu = Menu.buildFromTemplate([
+            {
+                label: "نمایش مخرن",
+                click() {
+                    shell.openExternal("https://github.com/rezaghz/loutos");
+                },
+            },
+            {
+                label: "خروج",
+                click() {
+                    app.quit();
+                    app.exit();
+                }
+            },
+        ]);
+        tray = new Tray(nimage);
+        tray.setContextMenu(contextMenu);
+    }
     tray.on('click', () => {
         mainWindow.show();
     });
