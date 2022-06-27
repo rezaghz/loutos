@@ -1,4 +1,4 @@
-import {app, Tray, Menu, BrowserWindow, shell,nativeImage} from 'electron';
+import {app, Tray, Menu, BrowserWindow, shell, nativeImage} from 'electron';
 
 const persianDate = require('persian-date');
 const path = require('path');
@@ -103,7 +103,7 @@ app.on('ready', () => {
 function trayInit() {
     let persian_date = new persianDate();
     let today = "امروز : " + persian_date.format("LLLL");
-    if (process.platform === "linux"){
+    if (process.platform === "linux") {
         const trayIcon = path.join(__static, "icons", "icon.png");
         const nimage = nativeImage.createFromPath(trayIcon);
         let contextMenu = Menu.buildFromTemplate([
@@ -129,11 +129,9 @@ function trayInit() {
         ]);
         tray = new Tray(nimage);
         tray.setContextMenu(contextMenu);
-    }
-    else {
+    } else {
         const trayIcon = path.join(__static, "icons", "icon.ico");
         const nimage = nativeImage.createFromPath(trayIcon);
-        tray.setToolTip(today);
         let contextMenu = Menu.buildFromTemplate([
             {
                 label: "نمایش مخرن",
@@ -151,6 +149,7 @@ function trayInit() {
         ]);
         tray = new Tray(nimage);
         tray.setContextMenu(contextMenu);
+        tray.setToolTip(today);
     }
     tray.on('click', () => {
         mainWindow.show();
