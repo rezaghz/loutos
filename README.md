@@ -21,6 +21,9 @@
 <p align="center">
     <img src="assets/scr-3.png" alt="loutos screenshot 3" width="600">
 </p>
+<p align="center">
+    <img src="assets/scr-4.png" alt="loutos screenshot 4" width="600">
+</p>
 
 
 
