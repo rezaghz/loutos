@@ -1,4 +1,4 @@
-# معرفی 
+# معرفی
 
 ![GitHub](https://img.shields.io/github/license/rezaghz/loutos)
 ![GitHub language count](https://img.shields.io/github/languages/count/rezaghz/loutos)
@@ -11,7 +11,12 @@
 لوتوس یک دستیار رومیزی فارسی که برای سیستم عامل های ویندوز ، مک و لینوکس طراحی شده که شامل تقویم ، تبدیل تاریخ ، دفترچه
 یادداشت و ...
 
+## دانلود
+
+برای دانلود به صفحه [releases](https://github.com/rezaghz/loutos/releases) مراجعه کنید
+
 ## اسکرین شات ها
+
 <p align="center">
     <img src="assets/scr-1.png" alt="loutos screenshot 1" width="600">
 </p>
@@ -25,9 +30,7 @@
     <img src="assets/scr-4.png" alt="loutos screenshot 4" width="600">
 </p>
 
-
-
-## نحوه Build 
+## نحوه Build
 
 ``` bash
 # install dependencies
@@ -40,10 +43,10 @@ npm run dev
 npm run build
 ```
 
-## لاگ تغییرات 
+## لاگ تغییرات
 
-شما میتونید [لاگ تغییرات](changelog.md) رو برای اطلاعات بیشتر و تغییرات اخیر مشاهده کنید 
+شما میتونید [لاگ تغییرات](changelog.md) رو برای اطلاعات بیشتر و تغییرات اخیر مشاهده کنید
 
 ## مسیر پیشرفت
 
- [مسیر پیشرفت](https://trello.com/b/90VwIm3M/loutos) لوتوس در ترلو ساخته شده شما میتونید اون رو مشاهده کنید 
+[مسیر پیشرفت](https://trello.com/b/90VwIm3M/loutos) لوتوس در ترلو ساخته شده شما میتونید اون رو مشاهده کنید 
