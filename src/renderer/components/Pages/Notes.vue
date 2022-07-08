@@ -13,7 +13,7 @@
               <span>{{ note.title }}</span>
             </div>
             <div class="tools d-flex flex-row justify-content-between p-1 align-items-center">
-              <p class="m-0"> {{ note.description }}</p>
+              <p class="m-0"> {{ note.short_description }}</p>
               <span @click.prevent="destroy(note.id,index)"><i class="fa fa-trash"></i></span>
             </div>
           </div>
@@ -56,8 +56,8 @@
 <script>
 import Sidebar from '../Partials/Sidebar';
 
-var PouchDB = require('pouchdb').default;
-var db = new PouchDB('notes');
+let PouchDB = require('pouchdb').default;
+let db = new PouchDB('notes');
 export default {
   name: "notes",
   components: {
@@ -102,14 +102,14 @@ export default {
     }
   },
   mounted() {
-    var self = this;
+    let self = this;
     db.info().then(function (result) {
       console.warn("connected successfully");
     }).catch(function (err) {
       console.log(err);
     });
+    // remove all notes
     /*db.allDocs().then(function (result) {
-        // Promise isn't supported by all browsers; you may want to use bluebird
         return Promise.all(result.rows.map(function (row) {
             return db.remove(row.id, row.value.rev);
         }));
@@ -125,8 +125,8 @@ export default {
           id: doc._id,
           title: doc.title,
           color: doc.color,
-          description: doc.description.length < 30 ? doc.description : doc.description.substring(0, 30) + " ...",
-          short_description: doc.description.length < 30 ? doc.description : doc.description.substring(0, 30) + " ..."
+          description: doc.description,
+          short_description: self.strLimit(doc.description),
         });
       });
     });
@@ -152,7 +152,8 @@ export default {
             id: response.id,
             title: self.title,
             color: self.background_color_new_body,
-            description: self.description.length < 30 ? self.description : self.description.substring(0, 30) + " ..."
+            description: self.description,
+            short_description: self.strLimit(self.description)
           });
           self.title = "";
           self.description = "";
@@ -187,6 +188,7 @@ export default {
       }, self).then(function (response) {
         self.notes[self.current_index].title = self.title;
         self.notes[self.current_index].description = self.description;
+        self.notes[self.current_index].short_description = self.strLimit(self.description);
         self.notes[self.current_index].color = self.background_color_new_body;
         swal("یادداشت با موفقیت ویرایش شد", {
           icon: "success",
@@ -226,11 +228,14 @@ export default {
           });
     },
     selectColor(index) {
-      for (var i in this.color_list) {
+      for (let i in this.color_list) {
         this.color_list[i].selected = false;
       }
       this.color_list[index].selected = true;
       this.background_color_new_body = this.color_list[index].color;
+    },
+    strLimit(str, end = 30) {
+      return str.length < 30 ? str : str.substring(0, end) + " ...";
     }
   }
 }
