@@ -40,10 +40,14 @@ function createWindow() {
         mainWindow.webContents
             .executeJavaScript('localStorage.getItem("settings.active_close_button");', true)
             .then(result => {
-                if (result == 'true') {
+                if (process.platform === 'darwin') {
                     app.exit(0);
                 } else {
-                    mainWindow.hide();
+                    if (result == 'true') {
+                        app.exit(0);
+                    } else {
+                        mainWindow.hide();
+                    }
                 }
             });
     });
