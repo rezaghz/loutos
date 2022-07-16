@@ -103,7 +103,7 @@ export default {
 }
 
 #submit {
-  background-color: #ff4552;
+  background-color: #0d47a1;
 }
 
 </style>

@@ -335,7 +335,7 @@ export default {
 .btn_circle_process {
   height: 50px;
   width: 50px;
-  background-color: #ff4552;
+  background-color: #0d47a1;
   border-radius: 50%;
   display: flex;
   justify-content: center;
