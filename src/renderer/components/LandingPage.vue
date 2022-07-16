@@ -51,12 +51,13 @@
   body { font-family: 'Source Sans Pro', sans-serif; }
 
   #wrapper {
-    background:
-      radial-gradient(
-        ellipse at top left,
-        rgba(255, 255, 255, 1) 40%,
-        rgba(229, 229, 229, .9) 100%
-      );
+    background: repeating-linear-gradient(
+  -55deg,
+  #bbdefb,
+  #bbdefb 10px,
+  #1976d2 10px,
+  #1976d2 15px
+);
     height: 100vh;
     padding: 60px 80px;
     width: 100vw;

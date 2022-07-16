@@ -1,7 +1,8 @@
 <template>
   <div id="wrapper">
     <div class="dashboard d-flex">
-      <div class="date-table">
+
+      <div class="date-table border-gradient-white-left">
         <div class="date-table-header">
           <div class="month-next" @click="prevMonth()">
             <i class="fa fa-angle-right"></i>
@@ -52,6 +53,7 @@
 
         <div class="clear"></div>
       </div>
+      <div class="vertical-line"></div>
       <div class="dd-calendar">
         <div class="d-flex align-items-center justify-content-between dd-calendar-in mt-2">
           <div class="calendar-in">
@@ -382,7 +384,7 @@ export default {
 .days-head {
   width: 100%;
   height: 40px;
-  background-color: #f0f0f0;
+  background-color: #e3f2fd;
   border-radius: 7px;
 }
 
@@ -414,7 +416,9 @@ export default {
 }
 
 .day-cell-item-inner:hover {
-  background: rgba(176, 202, 204, 0.28);
+  margin-top: 10px;
+  padding:15px !important;
+  background: rgba(25,118,210,0.12);
   color: #fff;
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
@@ -481,7 +485,7 @@ export default {
   -ms-flex-align: center;
   justify-content: center;
   -ms-flex-pack: center;
-  border-radius: 50%;
+  border-radius: 5px;
   color: #9b9b9b;
   -webkit-transition: all 0.4s ease-in-out;
   -moz-transition: all 0.4s ease-in-out;
@@ -548,7 +552,7 @@ export default {
 
 .month-now span {
   font-size: 20px;
-  color: #343890;
+  color: #1976d2;
   font-weight: bold;
 }
 
@@ -584,18 +588,21 @@ export default {
 .calendar-in-span {
   cursor: default;
   font-size: 58px;
-  color: #00a651;
+  color: #fff;
+  background:#1976d2;
+  border-radius:5px;
+  padding:5px;
 }
 
 .calendar-in-span span {
   font-size: 20px;
-  color: #00a651;
+  color: #1976d2;
   position: relative;
   top: -4px;
 }
 
 .calendar-btn {
-  background-color: #ff4552;
+  background-color: #0d47a1;
   width: 95%;
   height: 45px;
   border-radius: 10px;
@@ -766,7 +773,7 @@ export default {
 }
 
 .day_selected {
-  background: rgba(176, 202, 204, 0.38);
+  background: rgba(13,71,161,1,0.38);
 }
 
 .calendar-in-span {
@@ -822,9 +829,14 @@ export default {
 
 .go_today button {
   text-align: center;
-  background-color: #ff9645;
+  background-color: #0d47a1;
+  box-shadow:-10px 0px 10px rgba(13,71,161,0.3);
   display: block;
   color: white;
+  transition: box-shadow 0.5s;
+}
+.go_today button:hover {
+  box-shadow:-10px 0px 10px rgba(13,71,161,0.0);
 }
 
 @media only screen and (max-width: 1200px) {

@@ -8,19 +8,19 @@
     <div id="box">
       <div id="items">
         <router-link to="/">
-          <div class="item"><i class="fa fa-calendar"></i> تقویم</div>
+          <div class="item border-gradient-white-bottom"><i class="fa fa-calendar"></i> تقویم</div>
         </router-link>
         <router-link to="/notes">
-          <div class="item"><i class="fa fa-sticky-note"></i> دفترچه یادداشت</div>
+          <div class="item border-gradient-white-bottom"><i class="fa fa-sticky-note"></i> دفترچه یادداشت</div>
         </router-link>
         <router-link to="/convert-dates">
-          <div class="item"><i class="fa fa-exchange"></i> تبدیل تاریخ</div>
+          <div class="item border-gradient-white-bottom"><i class="fa fa-exchange"></i> تبدیل تاریخ</div>
         </router-link>
         <router-link to="/settings">
-          <div class="item"><i class="fa fa-cog"></i> تنظیمات</div>
+          <div class="item border-gradient-white-bottom"><i class="fa fa-cog"></i> تنظیمات</div>
         </router-link>
         <router-link to="/about">
-          <div class="item"><i class="fa fa-question-circle"></i> درباره</div>
+          <div class="item border-gradient-white-bottom"><i class="fa fa-question-circle"></i> درباره</div>
         </router-link>
       </div>
     </div>
@@ -68,13 +68,17 @@ export default {
   right: 23px;
   cursor: pointer;
   transition: right 200ms cubic-bezier(0.6, 0.05, 0.28, 0.91);
+  background: #fff;
+  border-radius: 5px;
+  padding: 10px 5px 5px 5px;
+    box-shadow: 0px 10px 5px 0px rgba(256, 256, 256, 0.5);
 }
 
 #btn div {
   width: 35px;
   height: 2px;
   margin-bottom: 8px;
-  background-color: #000000;
+  background-color: #1976d2;
   transition: transform 500ms cubic-bezier(0.6, 0.05, 0.28, 0.91), opacity 500ms, background-color 250ms;
 }
 
@@ -83,7 +87,7 @@ export default {
 }
 
 #btn.active div {
-  background-color: #343838;
+  background-color: #0d47a1;
 }
 
 #btn.active #top {
@@ -110,7 +114,8 @@ export default {
   opacity: 0;
   padding: 20px 0px;
   height: 100%;
-  background-color: #f6f6f6;
+background-color: #fff;
+box-shadow: -8px 0px 20px rgba(0,0,0,0.3);
   color: #343838;
   transition: all 350ms cubic-bezier(0.6, 0.05, 0.28, 0.91);
 }
@@ -140,7 +145,7 @@ export default {
 
 #items .item:hover {
   padding: 15px 45px;
-  background-color: rgba(52, 56, 56, 0.2);
+  background-color: rgba(30,136,229,0.2);
 }
 
 #btn, #btn * {
