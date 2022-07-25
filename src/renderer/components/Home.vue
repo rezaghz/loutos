@@ -117,6 +117,7 @@ export default {
       day: "",
       day_of_calendar: [],
       events: [],
+      vacations: [],
       disable_selected: false,
       show_go_today_btn: false,
       jalali_header_date: "",
@@ -139,9 +140,9 @@ export default {
     this.createCalendar(this.year, this.month);
   },
   methods: {
-    createCalendar(year, month) {
+    async createCalendar(year, month) {
       let dayInMonth = new persianDate([year, month]).daysInMonth();
-      let beforeMonthDate = this.getBeforeMonthDate(year, month);
+      let beforeMonthDate = await this.getBeforeMonthDate(year, month);
       let self = this;
       let today = new persianDate();
       this.day_of_calendar = [];
@@ -161,6 +162,7 @@ export default {
           });
         }, self);
       }
+      await this.findVacations(month, 'PersianCalendar');
       // PrimaryDay
       let counter = 1;
       for (counter = 1; counter <= dayInMonth; counter++) {
@@ -174,12 +176,12 @@ export default {
           month: createDay.month(),
           date: createDay.format("L"),
           disable_selected: showSelected,
-          vacationStyle: createDay.format('dddd') === "جمعه",
+          vacationStyle: createDay.format('dddd') === "جمعه" || this.isVacation(createDay.month(), createDay.date(), 'PersianCalendar')
         });
         self.disable_selected = false;
       }
       // After Date
-      let afterMonthDate = this.getAfterMonthDate(year, month);
+      let afterMonthDate = await this.getAfterMonthDate(year, month);
       if (afterMonthDate.length > 0) {
         afterMonthDate.forEach(function (time) {
           self.day_of_calendar.push({
@@ -239,12 +241,13 @@ export default {
       this.createHeaderDate(today.year(), today.month(), today.date());
       this.createCalendar(this.year, this.month);
     },
-    getBeforeMonthDate(year, month) {
+    async getBeforeMonthDate(year, month) {
       let firstDay = new persianDate([year, month, 1]).toLocale('en').format('d');
       let time = firstDay > 1 ? new persianDate([year, month, 1]).subtract('d', firstDay - 1) : [];
       if (time.length !== 0) {
         let extraDay = [];
         let endMonth = new persianDate([time.year(), time.month()]).daysInMonth();
+        await this.findVacations(time.month(), 'PersianCalendar');
         let startDayExtra = time.date();
         for (let counter = startDayExtra; counter <= endMonth; counter++) {
           let createDay = new persianDate([time.year(), time.month(), counter]);
@@ -253,7 +256,7 @@ export default {
             year: createDay.year(),
             month: createDay.month(),
             date: createDay.format("L"),
-            vacationStyle: createDay.format('dddd') === "جمعه",
+            vacationStyle: createDay.format('dddd') === "جمعه" ||  this.isVacation(createDay.month(), createDay.date(), 'PersianCalendar'),
             disableStyle: true,
           });
         }
@@ -261,13 +264,14 @@ export default {
       }
       return [];
     },
-    getAfterMonthDate(year, month) {
+    async getAfterMonthDate(year, month) {
       let minusDay = 35;
       if (this.day_of_calendar.length > 35)
         minusDay = 42;
       let afterDay = minusDay - this.day_of_calendar.length;
       if (afterDay > 0) {
         let afterMonth = new persianDate([year, month, 1]).add('M', 1).toLocale('fa');
+        await this.findVacations(afterMonth.month(), 'PersianCalendar');
         let extraDay = [];
         for (let counter = 1; counter <= afterDay; counter++) {
           let createDay = new persianDate([afterMonth.year(), afterMonth.month(), counter]);
@@ -276,7 +280,7 @@ export default {
             year: createDay.year(),
             month: createDay.month(),
             date: createDay.format("L"),
-            vacationStyle: createDay.format('dddd') === "جمعه",
+            vacationStyle: createDay.format('dddd') === "جمعه" || this.isVacation(createDay.month(), createDay.date(), 'PersianCalendar'),
             disableStyle: true,
           });
         }
@@ -355,7 +359,28 @@ export default {
           console.log(err);
         });
       });
-
+    },
+    async findVacations(month, calendar) {
+      let self = this;
+      try {
+        console.log(month, calendar);
+        var result = await db.find({
+          selector: {
+            Calendar: calendar,
+            Month: month,
+            IsVacation: 1,
+          },
+        });
+        if (result.docs.length > 0) {
+          console.log(result.docs);
+          self.vacations = [...result.docs, ...self.vacations];
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    isVacation(month, day, calendar) {
+      return this.vacations.find(element => element.Day == day && element.Month == month && element.Calendar == calendar) != undefined;
     },
     jalaliToGregorian(year, month, day, format = "LL") {
       return new persianDate([year, month, day]).toCalendar('gregorian').toLocale('en').format(format);
