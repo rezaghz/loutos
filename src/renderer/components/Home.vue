@@ -150,10 +150,13 @@ export default {
       if (beforeMonthDate.length > 0) {
         beforeMonthDate.forEach(function (time) {
           self.day_of_calendar.push({
+            jalali_month: time.month,
+            hijri_month: this.jalaliToHijri(time.year, time.month, time.day, "iM"),
             jalali_day: time.day,
             gregorian_day: this.jalaliToGregorian(time.year, time.month, time.day, "DD"),
             hijri_day: this.jalaliToHijri(time.year, time.month, time.day, "iDD"),
             month: time.month,
+            day: time.day,
             year: time.year,
             date: time.date,
             disableStyle: time.disableStyle,
@@ -162,21 +165,23 @@ export default {
           });
         }, self);
       }
-      await this.findVacations(month, 'PersianCalendar');
       // PrimaryDay
       let counter = 1;
       for (counter = 1; counter <= dayInMonth; counter++) {
         let createDay = new persianDate([year, month, counter]);
         let showSelected = today.date() === createDay.date() && today.year() === createDay.year() && today.month() === createDay.month();
         self.day_of_calendar.push({
+          jalali_month: createDay.month(),
+          hijri_month: this.jalaliToHijri(createDay.year(), createDay.month(), createDay.date(), "iM"),
           jalali_day: createDay.date(),
           gregorian_day: this.jalaliToGregorian(createDay.year(), createDay.month(), createDay.date(), "DD"),
           hijri_day: this.jalaliToHijri(createDay.year(), createDay.month(), createDay.date(), "iDD"),
           year: createDay.year(),
           month: createDay.month(),
+          day: createDay.date(),
           date: createDay.format("L"),
           disable_selected: showSelected,
-          vacationStyle: createDay.format('dddd') === "جمعه" || this.isVacation(createDay.month(), createDay.date(), 'PersianCalendar')
+          vacationStyle: false,
         });
         self.disable_selected = false;
       }
@@ -185,11 +190,14 @@ export default {
       if (afterMonthDate.length > 0) {
         afterMonthDate.forEach(function (time) {
           self.day_of_calendar.push({
+            jalali_month: time.month,
+            hijri_month: this.jalaliToHijri(time.year, time.month, time.day, "iM"),
             jalali_day: time.day,
             gregorian_day: this.jalaliToGregorian(time.year, time.month, time.day, "DD"),
             hijri_day: this.jalaliToHijri(time.year, time.month, time.day, "iDD"),
             month: time.month,
             year: time.year,
+            day: time.day,
             date: time.date,
             disableStyle: time.disableStyle,
             vacationStyle: time.vacationStyle,
@@ -197,6 +205,7 @@ export default {
           });
         }, self);
       }
+      await this.findVacations();
     },
     createHeaderDate(persian_year, persian_month, persian_day) {
       let date = new persianDate([persian_year, persian_month, persian_day]);
@@ -247,7 +256,6 @@ export default {
       if (time.length !== 0) {
         let extraDay = [];
         let endMonth = new persianDate([time.year(), time.month()]).daysInMonth();
-        await this.findVacations(time.month(), 'PersianCalendar');
         let startDayExtra = time.date();
         for (let counter = startDayExtra; counter <= endMonth; counter++) {
           let createDay = new persianDate([time.year(), time.month(), counter]);
@@ -256,7 +264,7 @@ export default {
             year: createDay.year(),
             month: createDay.month(),
             date: createDay.format("L"),
-            vacationStyle: createDay.format('dddd') === "جمعه" ||  this.isVacation(createDay.month(), createDay.date(), 'PersianCalendar'),
+            vacationStyle: false,
             disableStyle: true,
           });
         }
@@ -271,7 +279,6 @@ export default {
       let afterDay = minusDay - this.day_of_calendar.length;
       if (afterDay > 0) {
         let afterMonth = new persianDate([year, month, 1]).add('M', 1).toLocale('fa');
-        await this.findVacations(afterMonth.month(), 'PersianCalendar');
         let extraDay = [];
         for (let counter = 1; counter <= afterDay; counter++) {
           let createDay = new persianDate([afterMonth.year(), afterMonth.month(), counter]);
@@ -280,7 +287,7 @@ export default {
             year: createDay.year(),
             month: createDay.month(),
             date: createDay.format("L"),
-            vacationStyle: createDay.format('dddd') === "جمعه" || this.isVacation(createDay.month(), createDay.date(), 'PersianCalendar'),
+            vacationStyle: false,
             disableStyle: true,
           });
         }
@@ -360,27 +367,43 @@ export default {
         });
       });
     },
-    async findVacations(month, calendar) {
+    async findVacations() {
       let self = this;
-      try {
-        console.log(month, calendar);
-        var result = await db.find({
-          selector: {
-            Calendar: calendar,
-            Month: month,
-            IsVacation: 1,
-          },
-        });
-        if (result.docs.length > 0) {
-          console.log(result.docs);
-          self.vacations = [...result.docs, ...self.vacations];
-        }
-      } catch (err) {
-        console.log(err);
+      const uniqueJalaliMonth = [...new Set(self.day_of_calendar.map(item => item.jalali_month))];
+      const uniqueHijriMonth = [...new Set(self.day_of_calendar.map(item => item.hijri_month))];
+      await this.getVacations(uniqueJalaliMonth, "PersianCalendar");
+      await this.getVacations(uniqueHijriMonth, "ObservedHijriCalendar");
+      for (const day of self.day_of_calendar) {
+        day.vacationStyle = this.isVacation(day.year, day.month, day.day);
       }
     },
-    isVacation(month, day, calendar) {
-      return this.vacations.find(element => element.Day == day && element.Month == month && element.Calendar == calendar) != undefined;
+    async getVacations(months, calendar) {
+      let self = this;
+      for (const month of months) {
+        try {
+          var result = await db.find({
+            selector: {
+              Calendar: calendar,
+              Month: parseInt(fixNumbers(month)),
+              IsVacation: 1,
+            },
+          });
+          if (result.docs.length > 0) {
+            self.vacations = [...result.docs, ...self.vacations];
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    },
+    isVacation(year, month, day) {
+      let jalaliDate = new persianDate([year, month, day]);
+      let hijriDay = parseInt(fixNumbers(this.jalaliToHijri(year, month, day, "iD")));
+      let hijriMonth = parseInt(fixNumbers(this.jalaliToHijri(year, month, day, "iM")));
+      if (jalaliDate.format('dddd') === 'جمعه') {
+        return true;
+      }
+      return this.vacations.find(element => element.Day == day && element.Month == month && element.Calendar == 'PersianCalendar') != undefined || this.vacations.find(element => element.Day == hijriDay && element.Month == hijriMonth && element.Calendar == 'ObservedHijriCalendar') != undefined;
     },
     jalaliToGregorian(year, month, day, format = "LL") {
       return new persianDate([year, month, day]).toCalendar('gregorian').toLocale('en').format(format);
@@ -788,6 +811,10 @@ export default {
 
 .vacationStyle {
   color: red !important;
+}
+
+.disableStyle.vacationStyle {
+  color: rgba(255, 0, 0, 0.47) !important;
 }
 
 .day_selected {
