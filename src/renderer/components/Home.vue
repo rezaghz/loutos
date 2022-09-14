@@ -529,7 +529,6 @@ export default {
   -ms-flex-align: center;
   justify-content: center;
   -ms-flex-pack: center;
-  border-radius: 50%;
   color: #9b9b9b;
   -webkit-transition: all 0.4s ease-in-out;
   -moz-transition: all 0.4s ease-in-out;
@@ -691,7 +690,7 @@ export default {
 }
 
 .list-class-time, .list-class-time span {
-  color: #ffac5f;
+  color: red;
   font-size: 14px;
 }
 
