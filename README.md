@@ -42,6 +42,23 @@ npm run dev
 # build electron application for production
 npm run build
 ```
+## حمایت
+
+<p align="center">
+ <a href="https://daramet.com/rezaghz" target="_blank">
+        <img src="https://user-images.githubusercontent.com/36597017/190224192-e2d29a3e-2b60-43ce-b66c-e477eb6f6e9d.jpg" width="250" alt="Donation via Daramet">
+    </a>
+</p>
+
+<p align="center">
+ <a href="https://yekpay.me/en/rezaghz" target="_blank">
+        <img src="https://user-images.githubusercontent.com/36597017/190222767-4b90991f-b120-45ad-b998-e52be71143ac.png" width="250" alt="Donation via Yekpay">
+    </a>
+</p>
+
+
+
+
 
 ## لاگ تغییرات
 
