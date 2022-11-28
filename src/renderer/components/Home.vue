@@ -72,7 +72,7 @@
           </div>
         </div>
         <hr>
-        <prayer-times/>
+        <prayer-times ref="prayer_times"/>
         <ul class="list-class-date">
           <li v-for="event in events">
             <a target="_blank" class="d-flex justify-content-between align-items-center">
@@ -256,6 +256,7 @@ export default {
       this.createHijriTitle(today.year(), today.month());
       this.createHeaderDate(today.year(), today.month(), today.date());
       this.createCalendar(this.year, this.month);
+      this.$refs.prayer_times.loadPrayerTime()
     },
     async getBeforeMonthDate(year, month) {
       let firstDay = new persianDate([year, month, 1]).toLocale('en').format('d');
@@ -326,6 +327,7 @@ export default {
     getDateDetail(year, month, day) {
       this.createHeaderDate(year, month, day);
       this.getEvents(year, month, day);
+      this.$refs.prayer_times.loadPrayerTime(this.jalaliToGregorian(year,month,day,"YYYY-M-D"))
     },
     getEvents(year, month, day) {
       let self = this;

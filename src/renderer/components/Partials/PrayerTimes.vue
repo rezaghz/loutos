@@ -138,7 +138,8 @@ export default {
         });
       });
     },
-    loadPrayerTime() {
+    loadPrayerTime(calendarDate = null) {
+
       let self = this;
       localStorage.setItem('prayer_times.city_id', self.city_id);
       citiesDb.createIndex({
@@ -157,7 +158,7 @@ export default {
             console.log(city);
             const coordinates = new adhan.Coordinates(city.latitude, city.longitude);
             const params = adhan.CalculationMethod.Tehran();
-            const date = new Date();
+            const date = new Date(calendarDate);
             const prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
             self.prayer_time = {
               fajr: moment(prayerTimes.fajr).format("h:mm"),
