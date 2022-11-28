@@ -876,7 +876,7 @@ export default {
 .go_today {
   display: block;
   position: absolute;
-  bottom: 70px;
+  bottom: 10px;
   right: 15px;
 }
 

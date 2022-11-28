@@ -3,12 +3,14 @@
 ![GitHub](https://img.shields.io/github/license/rezaghz/loutos)
 ![GitHub language count](https://img.shields.io/github/languages/count/rezaghz/loutos)
 ![GitHub top language](https://img.shields.io/github/languages/top/rezaghz/loutos)
+[![Github All Releases](https://img.shields.io/github/downloads/rezaghz/loutos/total.svg)]()
+
 
 <p align="center">
     <img src="/assets/socialcard.jpg" width="700" alt="loutos">
 </p>
 
-لوتوس یک دستیار رومیزی فارسی که برای سیستم عامل های ویندوز ، مک و لینوکس طراحی شده که شامل تقویم ، تبدیل تاریخ ، دفترچه
+لوتوس یک دستیار رومیزی فارسی که برای سیستم عامل های ویندوز ، مک و لینوکس طراحی شده که شامل ابزار های مختلف مثل تقویم ، اوقات شرعی ،  تبدیل تاریخ ، دفترچه
 یادداشت و ...
 
 ## دانلود
