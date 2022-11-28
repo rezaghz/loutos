@@ -59,14 +59,15 @@
 </template>
 
 <script>
-const adhan = require('../../assets/adhan.esm.min');
+const adhan = require('@/assets/adhan.esm.min.js');
 import find from "pouchdb-find";
 import PouchDB from "pouchdb";
 import moment from "moment-timezone";
 
+const log = require('electron-log');
+
 PouchDB.plugin(find);
 const provincesDb = new PouchDB('provinces');
-const citiesDb = new PouchDB('cities');
 
 export default {
   data() {
@@ -99,7 +100,7 @@ export default {
         attachments: true
       }, function (err, response) {
         if (err) {
-          return console.log(err);
+          return log.error(err);
         }
         let rows = response.rows.sort((a, b) => a.doc.title.localeCompare(b.doc.title));
         rows.forEach(r => {
@@ -115,6 +116,7 @@ export default {
     loadCities(province_id, mounted = false) {
       let self = this;
       self.cities = [];
+      let citiesDb = new PouchDB('cities');
       citiesDb.createIndex({
         index: {
           fields: ['province_id']
@@ -125,20 +127,23 @@ export default {
             province_id: parseInt(province_id),
           },
         }).then(function (result) {
-          let docs = result.docs.sort((a, b) => a.title.localeCompare(b.title));
-          self.cities = docs;
-          if (!mounted) {
-            self.city_id = self.cities[0].id;
+          if (result.docs.length > 0) {
+            let docs = result.docs.sort((a, b) => a.title.localeCompare(b.title));
+            self.cities = docs;
+            if (!mounted) {
+              self.city_id = self.cities[0].id;
+            }
+            self.loadPrayerTime();
           }
-          self.loadPrayerTime();
+
         }).catch(function (err) {
-          console.log(err);
+          log.error(err);
         });
       });
     },
     loadPrayerTime(calendarDate = null) {
-
       let self = this;
+      let citiesDb = new PouchDB('cities');
       localStorage.setItem('prayer_times.city_id', self.city_id);
       citiesDb.createIndex({
         index: {
