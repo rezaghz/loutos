@@ -72,8 +72,9 @@ export default {
   data() {
     return {
       provinces: [],
-      province_id: 24,
+      province_id: '',
       cities: [],
+      city_id: '',
       prayer_time: {
         fajr: '',
         sunrise: '',
@@ -82,10 +83,13 @@ export default {
         maghrib: '',
         isha: '',
       },
-      city_id: 358,
     }
   },
   mounted() {
+    let storageProvinceId = localStorage.getItem('prayer_times.province_id');
+    let storageCityId = localStorage.getItem('prayer_times.city_id');
+    this.province_id = storageProvinceId === null ? 24 : storageProvinceId;
+    this.city_id = storageCityId === null ? 358 : storageCityId;
     this.loadProvinces();
   }, methods: {
     loadProvinces() {
@@ -101,15 +105,17 @@ export default {
         rows.forEach(r => {
           self.provinces.push(r.doc);
         });
-        self.loadCities(self.province_id);
+        self.loadCities(self.province_id, true);
       });
     },
     changeProvince() {
+      localStorage.setItem('prayer_times.province_id', this.province_id);
       this.loadCities(this.province_id)
     },
-    loadCities(province_id) {
+    loadCities(province_id, mounted = false) {
       let self = this;
       self.cities = [];
+      console.log("load cities");
       citiesDb.createIndex({
         index: {
           fields: ['province_id']
@@ -117,12 +123,15 @@ export default {
       }).then(function () {
         citiesDb.find({
           selector: {
-            province_id: province_id,
+            province_id: parseInt(province_id),
           },
         }).then(function (result) {
           let docs = result.docs.sort((a, b) => a.title.localeCompare(b.title));
+          console.log(docs);
           self.cities = docs;
-          self.city_id = self.cities[0].id;
+          if (!mounted) {
+            self.city_id = self.cities[0].id;
+          }
           self.loadPrayerTime();
         }).catch(function (err) {
           console.log(err);
@@ -131,6 +140,7 @@ export default {
     },
     loadPrayerTime() {
       let self = this;
+      localStorage.setItem('prayer_times.city_id', self.city_id);
       citiesDb.createIndex({
         index: {
           fields: ['id']
@@ -138,7 +148,7 @@ export default {
       }).then(function () {
         citiesDb.find({
           selector: {
-            id: self.city_id,
+            id: parseInt(self.city_id),
           },
         }).then(function (result) {
           let docs = result.docs;
