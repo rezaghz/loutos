@@ -115,7 +115,6 @@ export default {
     loadCities(province_id, mounted = false) {
       let self = this;
       self.cities = [];
-      console.log("load cities");
       citiesDb.createIndex({
         index: {
           fields: ['province_id']
@@ -127,7 +126,6 @@ export default {
           },
         }).then(function (result) {
           let docs = result.docs.sort((a, b) => a.title.localeCompare(b.title));
-          console.log(docs);
           self.cities = docs;
           if (!mounted) {
             self.city_id = self.cities[0].id;
@@ -155,7 +153,6 @@ export default {
           let docs = result.docs;
           if (docs.length > 0) {
             let city = docs[0];
-            console.log(city);
             const coordinates = new adhan.Coordinates(city.latitude, city.longitude);
             const params = adhan.CalculationMethod.Tehran();
             const date = new Date(calendarDate);

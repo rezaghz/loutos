@@ -327,7 +327,7 @@ export default {
     getDateDetail(year, month, day) {
       this.createHeaderDate(year, month, day);
       this.getEvents(year, month, day);
-      this.$refs.prayer_times.loadPrayerTime(this.jalaliToGregorian(year,month,day,"YYYY-M-D"))
+      this.$refs.prayer_times.loadPrayerTime(this.jalaliToGregorian(year, month, day, "YYYY-M-D"))
     },
     getEvents(year, month, day) {
       let self = this;
