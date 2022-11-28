@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import axios from 'axios'
+import migrations from './migration/runner-migrations';
 import swal from 'sweetalert';
 import App from './App'
 import router from './router'
 import store from './store'
 import persian_date from "persian-date";
 import moment_hijri from "moment-hijri";
-import events from './migration/events';
 import helpers from './helpers';
 
 window.persianDate = persian_date;

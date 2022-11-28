@@ -1,6 +1,6 @@
 {
   "name": "loutos",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Reza Ghasemzadeh <rezaghasemzadeh1@gmail.com>",
   "description": "persian assistant for all os",
   "license": "MIT",
@@ -55,18 +55,17 @@
   "dependencies": {
     "auto-launch": "^5.0.5",
     "axios": "^0.21.1",
+    "electron-log": "^4.4.8",
     "moment-hijri": "^2.1.2",
+    "moment-timezone": "^0.5.39",
     "persian-date": "^1.1.0",
     "pouchdb": "^7.2.2",
     "pouchdb-find": "^7.2.2",
     "pouchdb-load": "^1.4.6",
     "sweetalert": "^2.1.2",
     "uuid": "^8.3.2",
-    "v-title": "^1.0.13",
     "vue": "^2.5.16",
-    "vue-analog-clock": "^1.0.2",
     "vue-electron": "^1.0.6",
-    "vue-grid-layout": "^2.3.12",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
     "vuex-electron": "^1.0.0"

@@ -37,7 +37,7 @@
                v-for="value in day_of_calendar">
             <div class="day-cell-inner">
               <div class="day-cell-item">
-                <div class="day-cell-item-inner" :class="[{day_selected : value.disable_selected}]">
+                <div class="day-cell-item-inner" :class="[{day_selected : value.disable_today}]">
                                     <span
                                         :class="{disableStyle : value.disableStyle,vacationStyle : value.vacationStyle}">
 {{ value.jalali_day }}</span>
@@ -71,6 +71,8 @@
             <span class="calendar-in-span small_header d-block mt-3">{{ hijri_header_numeral }}</span>
           </div>
         </div>
+        <hr>
+        <prayer-times ref="prayer_times"/>
         <ul class="list-class-date">
           <li v-for="event in events">
             <a target="_blank" class="d-flex justify-content-between align-items-center">
@@ -93,22 +95,28 @@
         </div>
       </div>
     </div>
-    <sidebar></sidebar>
+    <sidebar/>
   </div>
 </template>
 
 <script>
 import Sidebar from './Partials/Sidebar';
+import PrayerTimes from './Partials/PrayerTimes';
 import find from "pouchdb-find";
 import PouchDB from "pouchdb";
 
+
 PouchDB.plugin(find);
-const db = new PouchDB('events');
+const eventsDb = new PouchDB('events');
 export default {
-  name: 'home',
-  components: {Sidebar},
+  components: {
+    Sidebar,
+    PrayerTimes
+  },
   data() {
     return {
+      events: [],
+      vacations: [],
       jalali_title: "",
       gregorian_title: "",
       hijri_title: "",
@@ -116,8 +124,7 @@ export default {
       year: "",
       day: "",
       day_of_calendar: [],
-      events: [],
-      disable_selected: false,
+      disable_today: false,
       show_go_today_btn: false,
       jalali_header_date: "",
       gregorian_header_date: "",
@@ -139,9 +146,9 @@ export default {
     this.createCalendar(this.year, this.month);
   },
   methods: {
-    createCalendar(year, month) {
+    async createCalendar(year, month) {
       let dayInMonth = new persianDate([year, month]).daysInMonth();
-      let beforeMonthDate = this.getBeforeMonthDate(year, month);
+      let beforeMonthDate = await this.getBeforeMonthDate(year, month);
       let self = this;
       let today = new persianDate();
       this.day_of_calendar = [];
@@ -149,15 +156,18 @@ export default {
       if (beforeMonthDate.length > 0) {
         beforeMonthDate.forEach(function (time) {
           self.day_of_calendar.push({
+            jalali_month: time.month,
+            hijri_month: this.jalaliToHijri(time.year, time.month, time.day, "iM"),
             jalali_day: time.day,
             gregorian_day: this.jalaliToGregorian(time.year, time.month, time.day, "DD"),
             hijri_day: this.jalaliToHijri(time.year, time.month, time.day, "iDD"),
             month: time.month,
+            day: time.day,
             year: time.year,
             date: time.date,
             disableStyle: time.disableStyle,
             vacationStyle: time.vacationStyle,
-            disable_selected: false,
+            disable_today: false,
           });
         }, self);
       }
@@ -167,34 +177,41 @@ export default {
         let createDay = new persianDate([year, month, counter]);
         let showSelected = today.date() === createDay.date() && today.year() === createDay.year() && today.month() === createDay.month();
         self.day_of_calendar.push({
+          jalali_month: createDay.month(),
+          hijri_month: this.jalaliToHijri(createDay.year(), createDay.month(), createDay.date(), "iM"),
           jalali_day: createDay.date(),
           gregorian_day: this.jalaliToGregorian(createDay.year(), createDay.month(), createDay.date(), "DD"),
           hijri_day: this.jalaliToHijri(createDay.year(), createDay.month(), createDay.date(), "iDD"),
           year: createDay.year(),
           month: createDay.month(),
+          day: createDay.date(),
           date: createDay.format("L"),
-          disable_selected: showSelected,
-          vacationStyle: createDay.format('dddd') === "جمعه",
+          disable_today: showSelected,
+          vacationStyle: false,
         });
-        self.disable_selected = false;
+        self.disable_today = false;
       }
       // After Date
-      let afterMonthDate = this.getAfterMonthDate(year, month);
+      let afterMonthDate = await this.getAfterMonthDate(year, month);
       if (afterMonthDate.length > 0) {
         afterMonthDate.forEach(function (time) {
           self.day_of_calendar.push({
+            jalali_month: time.month,
+            hijri_month: this.jalaliToHijri(time.year, time.month, time.day, "iM"),
             jalali_day: time.day,
             gregorian_day: this.jalaliToGregorian(time.year, time.month, time.day, "DD"),
             hijri_day: this.jalaliToHijri(time.year, time.month, time.day, "iDD"),
             month: time.month,
             year: time.year,
+            day: time.day,
             date: time.date,
             disableStyle: time.disableStyle,
             vacationStyle: time.vacationStyle,
-            disable_selected: false,
+            disable_today: false,
           });
         }, self);
       }
+      await this.findVacations();
     },
     createHeaderDate(persian_year, persian_month, persian_day) {
       let date = new persianDate([persian_year, persian_month, persian_day]);
@@ -230,6 +247,7 @@ export default {
     goToday() {
       this.show_go_today_btn = false;
       let today = new persianDate();
+      this.events = [];
       this.year = today.year();
       this.month = today.month();
       this.day = today.date();
@@ -238,8 +256,9 @@ export default {
       this.createHijriTitle(today.year(), today.month());
       this.createHeaderDate(today.year(), today.month(), today.date());
       this.createCalendar(this.year, this.month);
+      this.$refs.prayer_times.loadPrayerTime()
     },
-    getBeforeMonthDate(year, month) {
+    async getBeforeMonthDate(year, month) {
       let firstDay = new persianDate([year, month, 1]).toLocale('en').format('d');
       let time = firstDay > 1 ? new persianDate([year, month, 1]).subtract('d', firstDay - 1) : [];
       if (time.length !== 0) {
@@ -253,7 +272,7 @@ export default {
             year: createDay.year(),
             month: createDay.month(),
             date: createDay.format("L"),
-            vacationStyle: createDay.format('dddd') === "جمعه",
+            vacationStyle: false,
             disableStyle: true,
           });
         }
@@ -261,7 +280,7 @@ export default {
       }
       return [];
     },
-    getAfterMonthDate(year, month) {
+    async getAfterMonthDate(year, month) {
       let minusDay = 35;
       if (this.day_of_calendar.length > 35)
         minusDay = 42;
@@ -276,7 +295,7 @@ export default {
             year: createDay.year(),
             month: createDay.month(),
             date: createDay.format("L"),
-            vacationStyle: createDay.format('dddd') === "جمعه",
+            vacationStyle: false,
             disableStyle: true,
           });
         }
@@ -308,17 +327,18 @@ export default {
     getDateDetail(year, month, day) {
       this.createHeaderDate(year, month, day);
       this.getEvents(year, month, day);
+      this.$refs.prayer_times.loadPrayerTime(this.jalaliToGregorian(year, month, day, "YYYY-M-D"))
     },
     getEvents(year, month, day) {
       let self = this;
       self.events = [];
       let persian_date = new persianDate([year, month, day]);
-      db.createIndex({
+      eventsDb.createIndex({
         index: {
           fields: ['Calendar', 'Day', 'Month']
         }
       }).then(function () {
-        db.find({
+        eventsDb.find({
           selector: {
             Calendar: 'PersianCalendar',
             Day: persian_date.date(),
@@ -330,7 +350,7 @@ export default {
         }).catch(function (err) {
           console.log(err);
         });
-        db.find({
+        eventsDb.find({
           selector: {
             Calendar: 'GregorianCalendar',
             Day: parseInt(self.jalaliToGregorian(year, month, day, "D")),
@@ -342,7 +362,7 @@ export default {
         }).catch(function (err) {
           console.log(err);
         });
-        return db.find({
+        return eventsDb.find({
           selector: {
             Calendar: 'ObservedHijriCalendar',
             Day: parseInt(fixNumbers(self.jalaliToHijri(year, month, day, "iD"))),
@@ -355,7 +375,44 @@ export default {
           console.log(err);
         });
       });
-
+    },
+    async findVacations() {
+      let self = this;
+      const uniqueJalaliMonth = [...new Set(self.day_of_calendar.map(item => item.jalali_month))];
+      const uniqueHijriMonth = [...new Set(self.day_of_calendar.map(item => item.hijri_month))];
+      await this.getVacations(uniqueJalaliMonth, "PersianCalendar");
+      await this.getVacations(uniqueHijriMonth, "ObservedHijriCalendar");
+      for (const day of self.day_of_calendar) {
+        day.vacationStyle = this.isVacation(day.year, day.month, day.day);
+      }
+    },
+    async getVacations(months, calendar) {
+      let self = this;
+      for (const month of months) {
+        try {
+          var result = await eventsDb.find({
+            selector: {
+              Calendar: calendar,
+              Month: parseInt(fixNumbers(month)),
+              IsVacation: 1,
+            },
+          });
+          if (result.docs.length > 0) {
+            self.vacations = [...result.docs, ...self.vacations];
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    },
+    isVacation(year, month, day) {
+      let jalaliDate = new persianDate([year, month, day]);
+      let hijriDay = parseInt(fixNumbers(this.jalaliToHijri(year, month, day, "iD")));
+      let hijriMonth = parseInt(fixNumbers(this.jalaliToHijri(year, month, day, "iM")));
+      if (jalaliDate.format('dddd') === 'جمعه') {
+        return true;
+      }
+      return this.vacations.find(element => element.Day == day && element.Month == month && element.Calendar == 'PersianCalendar') != undefined || this.vacations.find(element => element.Day == hijriDay && element.Month == hijriMonth && element.Calendar == 'ObservedHijriCalendar') != undefined;
     },
     jalaliToGregorian(year, month, day, format = "LL") {
       return new persianDate([year, month, day]).toCalendar('gregorian').toLocale('en').format(format);
@@ -481,7 +538,6 @@ export default {
   -ms-flex-align: center;
   justify-content: center;
   -ms-flex-pack: center;
-  border-radius: 50%;
   color: #9b9b9b;
   -webkit-transition: all 0.4s ease-in-out;
   -moz-transition: all 0.4s ease-in-out;
@@ -643,7 +699,7 @@ export default {
 }
 
 .list-class-time, .list-class-time span {
-  color: #ffac5f;
+  color: red;
   font-size: 14px;
 }
 
@@ -765,6 +821,10 @@ export default {
   color: red !important;
 }
 
+.disableStyle.vacationStyle {
+  color: rgba(255, 0, 0, 0.47) !important;
+}
+
 .day_selected {
   background: rgba(176, 202, 204, 0.38);
 }
@@ -816,7 +876,7 @@ export default {
 .go_today {
   display: block;
   position: absolute;
-  bottom: 70px;
+  bottom: 10px;
   right: 15px;
 }
 
@@ -843,6 +903,13 @@ export default {
   .hijri_in_table {
     font-size: 12px !important;
   }
+
+
+}
+
+.prayer-time .title {
+  cursor: default;
+  font-size: 15px;
 }
 
 /* dashboard */
