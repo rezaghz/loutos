@@ -19,7 +19,7 @@ const {VueLoaderPlugin} = require('vue-loader')
  * that provide pure *.vue files that need compiling
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/webpack-configurations.html#white-listing-externals
  */
-let whiteListedModules = ['vue', 'axios', 'vue-electron', 'vue-router', 'vuex', 'vuex-electron', 'element-ui', "persian-date", "moment-hijri", "v-title", "vue-grid-layout", "uuid", "pouchdb", "sweetalert", "pouchdb-find", "auto-launch"]
+let whiteListedModules = ['vue', 'axios', 'vue-electron', 'vue-router', 'vuex', 'vuex-electron', 'element-ui', "persian-date", "moment-hijri", "vue-grid-layout", "uuid", "pouchdb", "sweetalert", "pouchdb-find", "auto-launch","moment-timezone"]
 
 let rendererConfig = {
     devtool: '#cheap-module-eval-source-map',

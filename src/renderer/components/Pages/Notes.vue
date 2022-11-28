@@ -57,7 +57,7 @@
 import Sidebar from '../Partials/Sidebar';
 
 let PouchDB = require('pouchdb').default;
-let db = new PouchDB('notes');
+let eventsDb = new PouchDB('notes');
 export default {
   name: "notes",
   components: {
@@ -109,9 +109,9 @@ export default {
       console.log(err);
     });
     // remove all notes
-    /*db.allDocs().then(function (result) {
+    /*eventsDb.allDocs().then(function (result) {
         return Promise.all(result.rows.map(function (row) {
-            return db.remove(row.id, row.value.rev);
+            return eventsDb.remove(row.id, row.value.rev);
         }));
     }).then(function () {
         // done!

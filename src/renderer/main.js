@@ -6,7 +6,7 @@ import router from './router'
 import store from './store'
 import persian_date from "persian-date";
 import moment_hijri from "moment-hijri";
-import events from './migration/events';
+import events from './migration/runner-migrations';
 import helpers from './helpers';
 
 window.persianDate = persian_date;

@@ -37,7 +37,7 @@
                v-for="value in day_of_calendar">
             <div class="day-cell-inner">
               <div class="day-cell-item">
-                <div class="day-cell-item-inner" :class="[{day_selected : value.disable_selected}]">
+                <div class="day-cell-item-inner" :class="[{day_selected : value.disable_today}]">
                                     <span
                                         :class="{disableStyle : value.disableStyle,vacationStyle : value.vacationStyle}">
 {{ value.jalali_day }}</span>
@@ -71,6 +71,8 @@
             <span class="calendar-in-span small_header d-block mt-3">{{ hijri_header_numeral }}</span>
           </div>
         </div>
+        <hr>
+        <prayer-times/>
         <ul class="list-class-date">
           <li v-for="event in events">
             <a target="_blank" class="d-flex justify-content-between align-items-center">
@@ -93,22 +95,28 @@
         </div>
       </div>
     </div>
-    <sidebar></sidebar>
+    <sidebar/>
   </div>
 </template>
 
 <script>
 import Sidebar from './Partials/Sidebar';
+import PrayerTimes from './Partials/PrayerTimes';
 import find from "pouchdb-find";
 import PouchDB from "pouchdb";
 
+
 PouchDB.plugin(find);
-const db = new PouchDB('events');
+const eventsDb = new PouchDB('events');
 export default {
-  name: 'home',
-  components: {Sidebar},
+  components: {
+    Sidebar,
+    PrayerTimes
+  },
   data() {
     return {
+      events: [],
+      vacations: [],
       jalali_title: "",
       gregorian_title: "",
       hijri_title: "",
@@ -116,9 +124,7 @@ export default {
       year: "",
       day: "",
       day_of_calendar: [],
-      events: [],
-      vacations: [],
-      disable_selected: false,
+      disable_today: false,
       show_go_today_btn: false,
       jalali_header_date: "",
       gregorian_header_date: "",
@@ -161,7 +167,7 @@ export default {
             date: time.date,
             disableStyle: time.disableStyle,
             vacationStyle: time.vacationStyle,
-            disable_selected: false,
+            disable_today: false,
           });
         }, self);
       }
@@ -180,10 +186,10 @@ export default {
           month: createDay.month(),
           day: createDay.date(),
           date: createDay.format("L"),
-          disable_selected: showSelected,
+          disable_today: showSelected,
           vacationStyle: false,
         });
-        self.disable_selected = false;
+        self.disable_today = false;
       }
       // After Date
       let afterMonthDate = await this.getAfterMonthDate(year, month);
@@ -201,7 +207,7 @@ export default {
             date: time.date,
             disableStyle: time.disableStyle,
             vacationStyle: time.vacationStyle,
-            disable_selected: false,
+            disable_today: false,
           });
         }, self);
       }
@@ -241,6 +247,7 @@ export default {
     goToday() {
       this.show_go_today_btn = false;
       let today = new persianDate();
+      this.events = [];
       this.year = today.year();
       this.month = today.month();
       this.day = today.date();
@@ -324,12 +331,12 @@ export default {
       let self = this;
       self.events = [];
       let persian_date = new persianDate([year, month, day]);
-      db.createIndex({
+      eventsDb.createIndex({
         index: {
           fields: ['Calendar', 'Day', 'Month']
         }
       }).then(function () {
-        db.find({
+        eventsDb.find({
           selector: {
             Calendar: 'PersianCalendar',
             Day: persian_date.date(),
@@ -341,7 +348,7 @@ export default {
         }).catch(function (err) {
           console.log(err);
         });
-        db.find({
+        eventsDb.find({
           selector: {
             Calendar: 'GregorianCalendar',
             Day: parseInt(self.jalaliToGregorian(year, month, day, "D")),
@@ -353,7 +360,7 @@ export default {
         }).catch(function (err) {
           console.log(err);
         });
-        return db.find({
+        return eventsDb.find({
           selector: {
             Calendar: 'ObservedHijriCalendar',
             Day: parseInt(fixNumbers(self.jalaliToHijri(year, month, day, "iD"))),
@@ -381,7 +388,7 @@ export default {
       let self = this;
       for (const month of months) {
         try {
-          var result = await db.find({
+          var result = await eventsDb.find({
             selector: {
               Calendar: calendar,
               Month: parseInt(fixNumbers(month)),
@@ -894,6 +901,13 @@ export default {
   .hijri_in_table {
     font-size: 12px !important;
   }
+
+
+}
+
+.prayer-time .title {
+  cursor: default;
+  font-size: 15px;
 }
 
 /* dashboard */
