@@ -50,7 +50,7 @@
         <div class="clearfix"></div>
         <div class="d-flex mb-3">
           <i class="fa fa-angle-left ml-1"></i>
-          <span class="small ml-1"><b>نیمه شب شرعی :</b></span>
+          <span class="small ml-1 isha"><b>نیمه شب شرعی :</b></span>
           <span class="small">{{ prayer_time.isha }}</span>
         </div>
       </div>
@@ -189,5 +189,7 @@ export default {
 </script>
 
 <style scoped>
-
+.isha {
+  font-size: 12px;
+}
 </style>
