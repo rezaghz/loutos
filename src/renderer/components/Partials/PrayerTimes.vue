@@ -3,14 +3,14 @@
     <span class="d-block text-center title mb-3">اوقات شرعی به افق شهر ها</span>
     <div class="d-flex justify-content-center align-items-center ">
       <div class="col-md-6">
-        <select class="form-control form-control-sm" @change="changeProvince" v-model="province_id">
+        <select class="form-control form-control-sm" @change="changeProvince()" v-model="province_id">
           <template v-for="province in provinces">
             <option :value="province.id">{{ province.title }}</option>
           </template>
         </select>
       </div>
       <div class="col-md-6">
-        <select class="form-control form-control-sm" @change="loadPrayerTime" v-model="city_id">
+        <select class="form-control form-control-sm" @change="loadPrayerTime()" v-model="city_id">
           <template v-for="(city,index) in cities">
             <option :value="city.id">{{ city.title }}</option>
           </template>
@@ -40,7 +40,7 @@
         <div class="d-flex mb-3">
           <i class="fa fa-angle-left ml-1"></i>
           <span class="small ml-1"><b>غروب خورشید :</b></span>
-          <span class="small">{{ prayer_time.asr }}</span>
+          <span class="small">{{ prayer_time.sunset }}</span>
         </div>
         <div class="d-flex mb-3">
           <i class="fa fa-angle-left ml-1"></i>
@@ -50,7 +50,7 @@
         <div class="clearfix"></div>
         <div class="d-flex mb-3">
           <i class="fa fa-angle-left ml-1"></i>
-          <span class="small ml-1"><b>نیمه شب شرعی : </b></span>
+          <span class="small ml-1"><b>نیمه شب شرعی :</b></span>
           <span class="small">{{ prayer_time.isha }}</span>
         </div>
       </div>
@@ -80,7 +80,7 @@ export default {
         fajr: '',
         sunrise: '',
         dhur: '',
-        asr: '',
+        sunset: '',
         maghrib: '',
         isha: '',
       },
@@ -142,6 +142,7 @@ export default {
       });
     },
     loadPrayerTime(calendarDate = null) {
+      console.log(calendarDate);
       let self = this;
       let citiesDb = new PouchDB('cities');
       localStorage.setItem('prayer_times.city_id', self.city_id);
@@ -158,17 +159,23 @@ export default {
           let docs = result.docs;
           if (docs.length > 0) {
             let city = docs[0];
-            const coordinates = new adhan.Coordinates(city.latitude, city.longitude);
-            const params = adhan.CalculationMethod.Tehran();
-            const date = new Date(calendarDate);
-            const prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+            let coordinates = new adhan.Coordinates(city.latitude, city.longitude);
+            let params = adhan.CalculationMethod.Tehran();
+            let date = new Date();
+            if (calendarDate !== null) {
+              date = new Date(calendarDate);
+            }
+            let prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+            const sunnahTimes = new adhan.SunnahTimes(prayerTimes);
+
+            console.log(prayerTimes);
             self.prayer_time = {
-              fajr: moment(prayerTimes.fajr).format("h:mm"),
-              sunrise: moment(prayerTimes.sunrise).format("h:mm"),
-              dhur: moment(prayerTimes.dhuhr).format("h:mm"),
-              asr: moment(prayerTimes.asr).format("h:mm"),
-              maghrib: moment(prayerTimes.maghrib).format("h:mm"),
-              isha: moment(prayerTimes.isha).format("h:mm"),
+              fajr: moment(prayerTimes.fajr).format("H:mm"),
+              sunrise: moment(prayerTimes.sunrise).format("H:mm"),
+              dhur: moment(prayerTimes.dhuhr).format("H:mm"),
+              sunset: moment(prayerTimes.sunset).format("H:mm"),
+              maghrib: moment(prayerTimes.maghrib).format("H:mm"),
+              isha: moment(sunnahTimes.middleOfTheNight).format("H:mm"),
             }
           }
         }).catch(function (err) {
