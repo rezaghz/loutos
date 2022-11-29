@@ -585,7 +585,7 @@
   },
   {
     "id": 305,
-    "title": "بهمئي",
+    "title": "بهمیي",
     "slug": "Bahmaie",
     "province_id": 18,
     "latitude": 0,
@@ -593,7 +593,7 @@
   },
   {
     "id": 385,
-    "title": "بوئين زهرا",
+    "title": "بویين زهرا",
     "slug": "Buin Zahra",
     "province_id": 27,
     "latitude": 35.766944,
@@ -1393,7 +1393,7 @@
   },
   {
     "id": 34,
-    "title": "سارئ",
+    "title": "ساری",
     "slug": "Infectious",
     "province_id": 3,
     "latitude": 36.563333,
@@ -1953,7 +1953,7 @@
   },
   {
     "id": 36,
-    "title": "قائم شهر",
+    "title": "قایم شهر",
     "slug": "Qaemshahr",
     "province_id": 3,
     "latitude": 35.5445805,
@@ -1961,7 +1961,7 @@
   },
   {
     "id": 416,
-    "title": "قائنات",
+    "title": "قاینات",
     "slug": "Ghaenat",
     "province_id": 30,
     "latitude": 33.726667,
@@ -2353,7 +2353,7 @@
   },
   {
     "id": 331,
-    "title": "مهدئ شهر",
+    "title": "مهدی شهر",
     "slug": "Mehdi City",
     "province_id": 21,
     "latitude": 35.7,
