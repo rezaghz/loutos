@@ -14,6 +14,13 @@
     url('../fonts/ttf/vazir-light.ttf') format('truetype');
 }
 
+#wrapper {
+    background: #e5e5e5;
+    height: 100vh;
+    padding: 60px 80px;
+    width: 100vw;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -340,19 +347,20 @@ p, h1, h2, h3, h4, h5, h6, strong, div, a {
 .dd-calendar {
     position: relative;
     background-color: #fbfaff;
-    padding: 10PX;
+    padding: 10px;
     width: 40%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
 .calendar-in-span {
     cursor: default;
-    font-size: 58px;
     color: #00a651;
 }
 
 .calendar-in-span span {
+    cursor: default;
     font-size: 20px;
-    color: #00a651;
     position: relative;
     top: -4px;
 }
@@ -595,11 +603,11 @@ p, h1, h2, h3, h4, h5, h6, strong, div, a {
 
 @media only screen and (max-width: 1200px) {
     .calendar-in-span {
-        font-size: 15px;
+        font-size: 13px;
     }
 
     .small_header {
-        font-size: 13px;
+        font-size: 12px;
     }
 
     .gregorian_in_table {

@@ -105,7 +105,6 @@ import PrayerTimes from './Partials/PrayerTimes';
 import find from "pouchdb-find";
 import PouchDB from "pouchdb";
 
-
 PouchDB.plugin(find);
 const eventsDb = new PouchDB('events');
 export default {
