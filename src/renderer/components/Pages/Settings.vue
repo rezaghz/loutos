@@ -84,26 +84,5 @@ export default {
 </script>
 
 <style scoped>
-.page {
-  width: 100%;
-  padding: 10px;
-  cursor: default;
-  border-left: 1px solid #f0f0f0;
-}
-
-.head {
-  width: 100%;
-  height: 40px;
-  background-color: #f0f0f0;
-  border-radius: 7px;
-}
-
-.tools {
-  padding: 10px;
-}
-
-#submit {
-  background-color: #ff4552;
-}
 
 </style>

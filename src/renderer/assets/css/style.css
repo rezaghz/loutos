@@ -58,6 +58,7 @@ input[type=number] {
     -ms-transition: 0.5s;
     -o-transition: 0.5s;
 }
+
 .fade-enter-active, .fade-leave-active {
     transition: opacity .5s;
 }
@@ -66,6 +67,7 @@ input[type=number] {
 {
     opacity: 0;
 }
+
 a {
     transition: 0.3s;
     -webkit-transition: 0.3s;
@@ -796,6 +798,28 @@ p, h1, h2, h3, h4, h5, h6, strong, div, a {
 
 /*
 ///////////////////////////////////
-3. Convert Dates
+3. Convert Dates 4.Settings
 //////////////////////////////////
 */
+
+.page {
+    width: 100%;
+    padding: 10px;
+    cursor: default;
+    border-left: 1px solid #f0f0f0;
+}
+
+.head {
+    width: 100%;
+    height: 40px;
+    background-color: #f0f0f0;
+    border-radius: 7px;
+}
+
+.tools {
+    padding: 10px;
+}
+
+#submit {
+    background-color: #ff4552;
+}
