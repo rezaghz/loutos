@@ -1,5 +1,5 @@
 <template>
-  <div id="wrapper">
+  <div id="wrapper" class="notes">
     <div class="dashboard d-flex">
       <div class="list">
         <div class="head">
@@ -103,7 +103,7 @@ export default {
   },
   mounted() {
     let self = this;
-    db.info().then(function (result) {
+    eventsDb.info().then(function (result) {
       console.warn("connected successfully");
     }).catch(function (err) {
       console.log(err);
@@ -118,7 +118,7 @@ export default {
     }).catch(function (err) {
         // error!
     });*/
-    db.allDocs({include_docs: true, descending: false}, function (err, doc) {
+    eventsDb.allDocs({include_docs: true, descending: false}, function (err, doc) {
       doc.rows.forEach(val => {
         let doc = val.doc;
         self.notes.push({
@@ -142,7 +142,7 @@ export default {
     add() {
       let self = this;
       if (this.title.length > 0 || this.description.length > 0) {
-        db.post({
+        eventsDb.post({
           title: this.title,
           description: this.description,
           color: this.background_color_new_body,
@@ -167,7 +167,7 @@ export default {
       self.mode = "edit";
       self.current_id = id;
       self.current_index = index;
-      db.get(id).then(function (doc) {
+      eventsDb.get(id).then(function (doc) {
         self.title = doc.title;
         self.description = doc.description;
         self.background_color_new_body = doc.color;
@@ -177,8 +177,8 @@ export default {
     },
     update() {
       let self = this;
-      db.get(self.current_id).then(function (doc) {
-        return db.put({
+      eventsDb.get(self.current_id).then(function (doc) {
+        return eventsDb.put({
           _id: self.current_id,
           _rev: doc._rev,
           title: self.title,
@@ -209,8 +209,8 @@ export default {
       })
           .then((willDelete) => {
             if (willDelete) {
-              db.get(id).then(function (doc) {
-                return db.remove(doc);
+              eventsDb.get(id).then(function (doc) {
+                return eventsDb.remove(doc);
               }).then(function (result) {
                 swal("یادداشت با موفقیت پاک شد", {
                   icon: "success",
@@ -242,188 +242,6 @@ export default {
 </script>
 
 <style scoped>
-.list {
-  width: 45%;
-  padding: 10px;
-  position: relative;
-  cursor: default;
-  border-left: 1px solid #f0f0f0;
-}
-
-.new {
-  width: 55%;
-  position: relative;
-  border-bottom-left-radius: 10px;
-  border-top-left-radius: 10px;
-}
-
-.head {
-  width: 100%;
-  height: 40px;
-  background-color: #f0f0f0;
-  border-radius: 7px;
-}
-
-.body {
-  height: 600px;
-  overflow-y: scroll;
-}
-
-.body .item {
-  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
-  background: #fff;
-  border-radius: 10px;
-  display: inline-block;
-  height: 110px;
-  position: relative;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  margin: 15px 15px 25px 15px;
-  padding: 12px;
-  cursor: pointer;
-}
-
-.body .item:hover {
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-}
-
-.body .item:active {
-  height: 107px;
-}
-
-
-.place_holder_color::placeholder {
-  color: #ffffff !important;
-}
-
-
-#input_new_title {
-  margin-top: 5px;
-  border-bottom: 2px solid #f0f0f0;
-}
-
-#input_new_title input {
-  border: none !important;
-  display: block;
-  background-color: transparent;
-}
-
-#input_new_title input::placeholder {
-  color: #000000;
-}
-
-
-#input_new_body {
-  height: 600px;
-}
-
-#body_textarea {
-  border: none;
-  resize: none;
-  outline: none;
-  display: block;
-  padding-top: 10px;
-  padding-right: 10px;
-  height: 100%;
-  padding-bottom: 50px;
-  background-color: transparent;
-}
-
-#body_textarea::placeholder {
-  color: #000000;
-}
-
-.btn_circle_process {
-  height: 50px;
-  width: 50px;
-  background-color: #ff4552;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
-  cursor: pointer;
-}
-
-.btn_circle_process i {
-  margin: auto;
-  color: white;
-}
-
-#new_note {
-  left: 80px;
-  background-color: #ff9645;
-}
-
-.tools {
-  right: 20px;
-  bottom: 20px;
-}
-
-.tools span {
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-  margin-left: 15px;
-}
-
-.tools span i {
-  margin: auto;
-  color: black;
-}
-
-.tools span:hover {
-  background-color: rgba(143, 136, 136, 0.36);
-}
-
-.color_list {
-  background-color: #e9e9e9;
-  border-radius: 40px;
-  width: 75%;
-  margin-bottom: 5px;
-  padding: 1px 0;
-}
-
-.color_list span {
-  height: 35px;
-  width: 35px;
-  margin: 10px auto;
-  cursor: pointer;
-}
-
-.color_list .selected {
-  border: 4px solid #6d6e71;
-}
-
-@media only screen and (max-width: 1600px) {
-  .body, #input_new_body {
-    height: 500px !important;
-  }
-}
-
-@media only screen and (max-width: 1400px) {
-  .body, #input_new_body {
-    height: 500px !important;
-  }
-}
-
-@media only screen and (max-width: 1200px) {
-  .body, #input_new_body {
-    height: 400px !important;
-  }
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-{
-  opacity: 0;
-}
 
 
 </style>
